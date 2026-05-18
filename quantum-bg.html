@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum Background</title>
+
+  <!-- ── フォント候補 ──
+    攻殻機動隊的 / サイバーパンク系に合う Google Fonts:
+
+    1. Share Tech Mono — テクニカルモノスペース。HUDやターミナル感
+    2. Orbitron        — 幾何学的・近未来的ディスプレイフォント
+    3. Rajdhani        — 角ばったサンセリフ、テック感あり
+    4. Exo 2           — SF映画的、読みやすさとスタイルの両立
+    5. Sawarabi Gothic — 日本語対応ゴシック、クリーンで相性◎
+    6. M PLUS 1 Code   — 日本語対応モノスペース、コード的
+    7. Zen Kaku Gothic New — 日本語対応、モダンで硬質な印象
+    8. Noto Sans JP   — 汎用的だが太さバリエーション豊富
+
+    下記では英語見出し=Orbitron、本文=Rajdhani、日本語=Zen Kaku Gothic New を読み込み
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;700&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow-x: hidden;
+      background: #0a0a0c;
+    }
+
+    /* ── Quantum Canvas (背景最下層) ── */
+    #quantum-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+      display: block;
+    }
+
+    /* ── Dark Overlay (opacity 0.2) ── */
+    #dark-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 1;
+      background: rgba(0, 0, 0, 0.2);
+      pointer-events: none;
+    }
+
+    /* ── Content Layer (テキスト・UI) ── */
+    .content {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    /* ── Typography Showcase ── */
+    .font-showcase {
+      max-width: 800px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .font-demo {
+      padding: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      background: rgba(10, 10, 12, 0.4);
+      backdrop-filter: blur(12px);
+    }
+
+    .font-demo .label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: rgba(130, 150, 180, 0.6);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    /* Orbitron — 英語見出し向き */
+    .demo-orbitron h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: clamp(28px, 5vw, 56px);
+      color: rgba(230, 225, 210, 0.9);
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+    }
+
+    /* Rajdhani — 英語サブヘッド・本文 */
+    .demo-rajdhani p {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 400;
+      font-size: clamp(16px, 2.5vw, 22px);
+      color: rgba(200, 200, 210, 0.8);
+      line-height: 1.7;
+      letter-spacing: 0.03em;
+    }
+
+    /* Share Tech Mono — コード・HUD的テキスト */
+    .demo-sharetech p {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: clamp(13px, 1.8vw, 16px);
+      color: rgba(130, 180, 200, 0.75);
+      line-height: 1.8;
+      letter-spacing: 0.04em;
+    }
+
+    /* Exo 2 — バランス型 */
+    .demo-exo2 p {
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 300;
+      font-size: clamp(15px, 2vw, 20px);
+      color: rgba(210, 210, 220, 0.8);
+      line-height: 1.7;
+    }
+
+    /* Zen Kaku Gothic New — 日本語 */
+    .demo-zenkaku h2 {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 700;
+      font-size: clamp(20px, 3vw, 32px);
+      color: rgba(230, 225, 210, 0.85);
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+    .demo-zenkaku p {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 400;
+      font-size: clamp(14px, 2vw, 18px);
+      color: rgba(200, 200, 210, 0.75);
+      line-height: 1.9;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 量子アニメーション背景 -->
+  <canvas id="quantum-canvas"></canvas>
+
+  <!-- 暗色オーバーレイ -->
+  <div id="dark-overlay"></div>
+
+  <!-- コンテンツ層 -->
+  <div class="content">
+    <div class="font-showcase">
+
+      <div class="font-demo demo-orbitron">
+        <div class="label">Orbitron — Display / Heading</div>
+        <h1>QUANTUM<br>SUPERPOSITION</h1>
+      </div>
+
+      <div class="font-demo demo-rajdhani">
+        <div class="label">Rajdhani — Subheading / Body</div>
+        <p>The wave function collapses upon observation. Each cell exists in superposition — simultaneously + and − — until measured. Interference patterns emerge from the quantum walk on a discrete lattice.</p>
+      </div>
+
+      <div class="font-demo demo-sharetech">
+        <div class="label">Share Tech Mono — Terminal / HUD</div>
+        <p>STATE: |ψ⟩ = α|+⟩ + β|−⟩<br>
+           COHERENCE: 0.847<br>
+           COLLAPSE_T: 3.0s → REQUANTIZE</p>
+      </div>
+
+      <div class="font-demo demo-exo2">
+        <div class="label">Exo 2 — Balanced Body</div>
+        <p>An observer-dependent reality where measurement determines form. The density of + and − characters creates a halftone interference pattern — a visual metaphor for quantum uncertainty.</p>
+      </div>
+
+      <div class="font-demo demo-zenkaku">
+        <div class="label">Zen Kaku Gothic New — 日本語</div>
+        <h2>量子重ね合わせの観測</h2>
+        <p>観測されるまで、各セルは＋と−の重ね合わせ状態にある。干渉縞は離散格子上の量子ウォークから生じ、視線が崩壊を引き起こす。</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+  // ═══════════════════════════════════════════════════
+  //  Quantum +/− Background Animation
+  //  (Wave interference + reaction-diffusion, no eye tracking)
+  // ═══════════════════════════════════════════════════
+
+  const FONT_SIZE = 10;
+  const BG_COLOR = '#0a0a0c';
+
+  const canvas = document.getElementById('quantum-canvas');
+  const ctx = canvas.getContext('2d');
+
+  let cellW, cellH, cols, rows, scaledFont;
+
+  // ── Quantum Walk (2D Schrödinger lattice) ──────────
+
+  class QuantumWalk {
+    constructor(cols, rows, opts = {}) {
+      this.cols = cols;
+      this.rows = rows;
+      this.N = cols * rows;
+      this.J = opts.J ?? 0.5;
+      this.dt = opts.dt ?? 0.02;
+      this.damping = opts.damping ?? 0.9995;
+      this.psiRe = new Float32Array(this.N);
+      this.psiIm = new Float32Array(this.N);
+      this.potential = new Float32Array(this.N);
+      this._dRe = new Float32Array(this.N);
+      this._dIm = new Float32Array(this.N);
+      this._tmpRe = new Float32Array(this.N);
+      this._tmpIm = new Float32Array(this.N);
+      this.sources = [];
+      this.time = 0;
+    }
+
+    addSource(x, y, freq, amp, phase = 0) {
+      this.sources.push({ x: Math.round(x), y: Math.round(y), freq, amp, phase });
+    }
+
+    driveFromSources() {
+      for (const src of this.sources) {
+        const idx = src.y * this.cols + src.x;
+        if (idx >= 0 && idx < this.N) {
+          const phase = src.freq * this.time + src.phase;
+          const injection = src.amp * this.dt;
+          this.psiRe[idx] += injection * Math.cos(phase);
+          this.psiIm[idx] += injection * Math.sin(phase);
+        }
+      }
+    }
+
+    computeDerivative() {
+      const { cols, rows, J, psiRe, psiIm, potential, _dRe, _dIm } = this;
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const idx = r * cols + c;
+          const up    = ((r > 0 ? r : rows) - 1) * cols + c;
+          const down  = ((r + 1) % rows) * cols + c;
+          const left  = r * cols + ((c > 0 ? c : cols) - 1);
+          const right = r * cols + ((c + 1) % cols);
+          const hopRe = psiRe[up] + psiRe[down] + psiRe[left] + psiRe[right];
+          const hopIm = psiIm[up] + psiIm[down] + psiIm[left] + psiIm[right];
+          const V = potential[idx];
+          const HpsiRe = -J * (hopRe - 4 * psiRe[idx]) + V * psiRe[idx];
+          const HpsiIm = -J * (hopIm - 4 * psiIm[idx]) + V * psiIm[idx];
+          _dRe[idx] = HpsiIm;
+          _dIm[idx] = -HpsiRe;
+        }
+      }
+    }
+
+    step() {
+      const { psiRe, psiIm, _dRe, _dIm, _tmpRe, _tmpIm, dt, N, damping } = this;
+      this.driveFromSources();
+      this.computeDerivative();
+      for (let i = 0; i < N; i++) {
+        _tmpRe[i] = psiRe[i] + _dRe[i] * dt * 0.5;
+        _tmpIm[i] = psiIm[i] + _dIm[i] * dt * 0.5;
+      }
+      const savedRe = new Float32Array(psiRe);
+      const savedIm = new Float32Array(psiIm);
+      psiRe.set(_tmpRe);
+      psiIm.set(_tmpIm);
+      this.computeDerivative();
+      for (let i = 0; i < N; i++) {
+        psiRe[i] = (savedRe[i] + _dRe[i] * dt) * damping;
+        psiIm[i] = (savedIm[i] + _dIm[i] * dt) * damping;
+      }
+      this.time += dt;
+    }
+
+    getDensityForDisplay() {
+      const { psiRe, psiIm, N } = this;
+      const prob = new Float32Array(N);
+      for (let i = 0; i < N; i++) {
+        prob[i] = psiRe[i] * psiRe[i] + psiIm[i] * psiIm[i];
+      }
+      const sorted = Float32Array.from(prob).sort();
+      const p95 = sorted[Math.floor(sorted.length * 0.95)] || 1e-10;
+      const maxVal = Math.max(p95 * 2, 1e-10);
+      for (let i = 0; i < prob.length; i++) {
+        prob[i] = Math.min(prob[i] / maxVal, 1.0);
+      }
+      return prob;
+    }
+  }
+
+  // ── Setup ──────────────────────────────────────────
+
+  let qw = null;
+
+  function setupCanvas() {
+    canvas.width  = window.innerWidth * devicePixelRatio;
+    canvas.height = window.innerHeight * devicePixelRatio;
+    canvas.style.width  = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    scaledFont = FONT_SIZE * devicePixelRatio;
+    cellW = Math.ceil(scaledFont * 0.6);
+    cellH = Math.ceil(scaledFont * 1.1);
+    cols = Math.floor(canvas.width / cellW);
+    rows = Math.floor(canvas.height / cellH);
+    ctx.font = `${scaledFont}px 'IBM Plex Mono','Consolas',monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+  }
+
+  function initQuantumWalk() {
+    qw = new QuantumWalk(cols, rows, { J: 0.4, dt: 0.025, damping: 0.9992 });
+
+    // Dense interference sources (5×3 grid) → full-screen wave patterns
+    const srcCols = 5, srcRows = 3;
+    for (let sy = 0; sy < srcRows; sy++) {
+      for (let sx = 0; sx < srcCols; sx++) {
+        const x = Math.round(cols * (sx + 0.5) / srcCols);
+        const y = Math.round(rows * (sy + 0.5) / srcRows);
+        const amp  = 2.0 + Math.sin(sx * 1.7 + sy * 2.3) * 0.8;
+        const freq = 5.5 + Math.cos(sx * 0.9 + sy * 1.4) * 1.5;
+        const phase = (sx * 2.1 + sy * 3.7) % (Math.PI * 2);
+        qw.addSource(x, y, amp, freq, phase);
+      }
+    }
+  }
+
+  // ── Render: +/− bars via Canvas 2D ─────────────────
+
+  function renderDensity(density) {
+    const gamma = 0.5;
+    const t = performance.now();
+
+    ctx.fillStyle = BG_COLOR;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const barThick = Math.max(1, Math.round(scaledFont * 0.14));
+    const halfLenH = cellW * 0.35;
+    const halfLenV = cellH * 0.35;
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        let d = density[r * cols + c];
+        if (isNaN(d)) continue;
+        d = Math.pow(Math.max(0, d), gamma);
+        if (d < 0.02) continue;
+
+        const cx = c * cellW + cellW / 2;
+        const cy = r * cellH + cellH / 2;
+
+        // Coherence-driven flicker (rhythmic + random blend)
+        const phase = c * 0.37 + r * 0.71 + c * 7.3 + r * 13.7;
+        const rhythmic = 0.5 + 0.5 * Math.sin(t * 0.008 + phase);
+        const noise = Math.random();
+        const threshold = 0.6 * rhythmic + 0.4 * noise;
+        const showPlus = threshold < d;
+
+        // Alpha from density
+        const alpha = Math.min(0.55, d * 0.65);
+        if (alpha < 0.03) continue;
+
+        // Cool blue-gray for superposition state
+        ctx.fillStyle = `rgba(130, 150, 180, ${alpha.toFixed(2)})`;
+
+        // Horizontal bar (− component, always)
+        ctx.fillRect(cx - halfLenH, cy - barThick / 2, halfLenH * 2, barThick);
+
+        // Vertical bar (+ component, conditional)
+        if (showPlus) {
+          ctx.fillRect(cx - barThick / 2, cy - halfLenV, barThick, halfLenV * 2);
+        }
+      }
+    }
+  }
+
+  // ── Animation Loop ─────────────────────────────────
+
+  function animate() {
+    // 8 quantum walk steps per frame
+    for (let i = 0; i < 8; i++) {
+      qw.step();
+    }
+    const density = qw.getDensityForDisplay();
+    renderDensity(density);
+    requestAnimationFrame(animate);
+  }
+
+  // ── Init ───────────────────────────────────────────
+
+  setupCanvas();
+  initQuantumWalk();
+  animate();
+
+  window.addEventListener('resize', () => {
+    setupCanvas();
+    initQuantumWalk();
+  });
+  </script>
+</body>
+</html>

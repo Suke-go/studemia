@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studemia 2027</title>
+  <meta name="description" content="Studemia 2027 — 学生主体の学際学術イベント">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ══════════════════════════════════════════
+       Reset & Base
+       ══════════════════════════════════════════ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(130,150,180,0.3) transparent;
+    }
+
+    body {
+      background: #0a0a0c;
+      color: rgba(210, 210, 220, 0.85);
+      font-family: 'Zen Kaku Gothic New', 'Rajdhani', sans-serif;
+      font-weight: 400;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ══════════════════════════════════════════
+       Quantum Canvas (Layer 0)
+       ══════════════════════════════════════════ */
+    #quantum-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+      display: block;
+    }
+
+    /* ══════════════════════════════════════════
+       Dark Overlay (Layer 1)
+       ══════════════════════════════════════════ */
+    #dark-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 1;
+      background: rgba(0, 0, 0, 0.2);
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════════
+       Content (Layer 2)
+       ══════════════════════════════════════════ */
+    .site-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(10, 10, 12, 0.75);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(130, 150, 180, 0.08);
+      padding: 0 24px;
+      transition: background 0.3s;
+    }
+
+    nav .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    nav .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: rgba(230, 225, 210, 0.9);
+      letter-spacing: 0.12em;
+      text-decoration: none;
+    }
+
+    nav .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    nav .nav-links a {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      color: rgba(180, 185, 200, 0.7);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav .nav-links a:hover {
+      color: rgba(230, 225, 210, 0.95);
+    }
+
+    /* ── Section base ── */
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 100px 24px 60px;
+    }
+
+    .section-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: rgba(130, 150, 180, 0.5);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: clamp(22px, 3.5vw, 36px);
+      color: rgba(230, 225, 210, 0.9);
+      letter-spacing: 0.06em;
+      margin-bottom: 32px;
+      line-height: 1.3;
+    }
+
+    h3 {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 700;
+      font-size: clamp(16px, 2vw, 20px);
+      color: rgba(220, 218, 210, 0.9);
+      margin-bottom: 8px;
+    }
+
+    p, li {
+      font-size: clamp(14px, 1.8vw, 16px);
+      line-height: 1.9;
+      color: rgba(200, 200, 210, 0.75);
+    }
+
+    a {
+      color: rgba(130, 180, 220, 0.85);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(130, 180, 220, 0.2);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    a:hover {
+      color: rgba(180, 210, 240, 1);
+      border-color: rgba(180, 210, 240, 0.5);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      max-width: none;
+    }
+
+    .hero-title {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: clamp(42px, 8vw, 96px);
+      color: rgba(230, 225, 210, 0.95);
+      letter-spacing: 0.1em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .hero-year {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: clamp(14px, 2vw, 18px);
+      color: rgba(130, 150, 180, 0.6);
+      letter-spacing: 0.3em;
+      margin-bottom: 40px;
+    }
+
+    .hero-tagline {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 400;
+      font-size: clamp(15px, 2.2vw, 20px);
+      color: rgba(200, 200, 210, 0.65);
+      max-width: 600px;
+      line-height: 1.8;
+    }
+
+    .hero-scroll {
+      margin-top: 60px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: rgba(130, 150, 180, 0.35);
+      letter-spacing: 0.15em;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.7; }
+    }
+
+    /* ── Divider ── */
+    .divider {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .divider hr {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(130,150,180,0.15), transparent);
+    }
+
+    /* ── Glass Card ── */
+    .glass-card {
+      background: rgba(15, 15, 20, 0.5);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(130, 150, 180, 0.08);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 20px;
+    }
+
+    /* ── TBA Badge ── */
+    .tba-badge {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      color: rgba(130, 180, 220, 0.7);
+      border: 1px solid rgba(130, 180, 220, 0.2);
+      padding: 6px 16px;
+      border-radius: 4px;
+      letter-spacing: 0.15em;
+    }
+
+    /* ── Details grid ── */
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .detail-item {
+      padding: 24px;
+      background: rgba(15, 15, 20, 0.4);
+      border: 1px solid rgba(130, 150, 180, 0.06);
+      border-radius: 8px;
+    }
+
+    .detail-item .detail-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: rgba(130, 150, 180, 0.45);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .detail-item .detail-value {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      color: rgba(220, 218, 210, 0.85);
+    }
+
+    /* ── Team grid ── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .team-card {
+      padding: 28px 24px;
+      background: rgba(15, 15, 20, 0.45);
+      border: 1px solid rgba(130, 150, 180, 0.06);
+      border-radius: 10px;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .team-card:hover {
+      border-color: rgba(130, 150, 180, 0.15);
+      background: rgba(20, 20, 28, 0.55);
+    }
+
+    .team-card .name {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: rgba(230, 225, 210, 0.9);
+      margin-bottom: 6px;
+    }
+
+    .team-card .affiliation {
+      font-size: 13px;
+      color: rgba(180, 185, 200, 0.6);
+      margin-bottom: 4px;
+    }
+
+    .team-card .interests {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: rgba(130, 150, 180, 0.55);
+      letter-spacing: 0.05em;
+    }
+
+    .team-card .social {
+      margin-top: 12px;
+    }
+
+    .team-card .social a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: rgba(130, 180, 220, 0.6);
+      border-bottom: 1px solid rgba(130, 180, 220, 0.15);
+    }
+
+    /* ── Sponsor ── */
+    .sponsor-plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .sponsor-plan {
+      padding: 28px 24px;
+      background: rgba(15, 15, 20, 0.45);
+      border: 1px solid rgba(130, 150, 180, 0.08);
+      border-radius: 10px;
+    }
+
+    .sponsor-plan h3 {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      color: rgba(230, 225, 210, 0.85);
+      margin-bottom: 4px;
+    }
+
+    .sponsor-plan .price {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      color: rgba(130, 180, 220, 0.7);
+      margin-bottom: 16px;
+    }
+
+    .sponsor-plan ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sponsor-plan li {
+      font-size: 13px;
+      color: rgba(200, 200, 210, 0.65);
+      padding: 4px 0;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .sponsor-plan li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: rgba(130, 150, 180, 0.4);
+    }
+
+    /* ── Archives ── */
+    .archive-item {
+      padding: 24px;
+      background: rgba(15, 15, 20, 0.35);
+      border: 1px solid rgba(130, 150, 180, 0.06);
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .archive-item h3 {
+      margin-bottom: 4px;
+    }
+
+    .archive-item p {
+      font-size: 14px;
+      color: rgba(180, 185, 200, 0.55);
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 60px 24px 40px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: rgba(130, 150, 180, 0.3);
+      letter-spacing: 0.1em;
+    }
+
+    footer a {
+      color: rgba(130, 150, 180, 0.4);
+      border-bottom: none;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      nav .nav-links { display: none; }
+      section { padding: 80px 16px 40px; }
+      .glass-card { padding: 20px 16px; }
+      .hero { padding: 100px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ Quantum Background ═══ -->
+  <canvas id="quantum-canvas"></canvas>
+  <div id="dark-overlay"></div>
+
+  <!-- ═══ Navigation ═══ -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="logo">STUDEMIA</a>
+      <ul class="nav-links">
+        <li><a href="#concept">Concept</a></li>
+        <li><a href="#details">Details</a></li>
+        <li><a href="#speakers">Guests</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#sponsor">Sponsor</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ═══ Site Content ═══ -->
+  <div class="site-content">
+
+    <!-- ── Hero ── -->
+    <section class="hero" id="top">
+      <div class="hero-year">ACADEMIC UNCONFERENCE</div>
+      <h1 class="hero-title">STUDEMIA<br>2027</h1>
+      <p class="hero-tagline">
+        研究者・クリエイター・起業家の卵が集い、<br>
+        知の境界を超えて問いを紡ぐ学術イベント
+      </p>
+      <div class="hero-scroll">↓ SCROLL</div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <!-- ── Concept ── -->
+    <section id="concept">
+      <div class="section-label">// concept</div>
+      <h2>CONCEPT</h2>
+      <div class="glass-card">
+        <p>
+          Studemia は、研究室の中では生まれないような議論に真剣に向き合うための学際学術イベントです。
+          参加者が抱える〈いま解きたい社会・研究・表現の問い〉を共有し合い、
+          即席チームでテーマを掘り下げ、プロトタイピング・議論を行います。
+        </p>
+        <br>
+        <p style="color: rgba(130,180,220,0.65); font-family: 'Share Tech Mono', monospace; font-size: 13px;">
+          ▶ 問いを持ち寄る — 参加者が抱える問いを共有し合う<br>
+          ▶ 即席チームで実験する — アンカンファレンス形式でテーマを掘り下げる<br>
+          ▶ 知のすそ野を広げる — 分野を超えた議論と発見
+        </p>
+      </div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <!-- ── News ── -->
+    <section id="news">
+      <div class="section-label">// news</div>
+      <h2>NEWS</h2>
+      <div class="glass-card">
+        <p style="color: rgba(130,150,180,0.5); font-family: 'Share Tech Mono', monospace; font-size: 13px;">
+          2027.XX.XX — サイト公開。詳細は順次更新します。
+        </p>
+      </div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <!-- ── Event Details ── -->
+    <section id="details">
+      <div class="section-label">// event details</div>
+      <h2>開催概要</h2>
+      <div class="details-grid">
+        <div class="detail-item">
+          <div class="detail-label">Date</div>
+          <div class="detail-value"><span class="tba-badge">TBA</span></div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Venue</div>
+          <div class="detail-value"><span class="tba-badge">TBA</span></div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Format</div>
+          <div class="detail-value">オフライン合宿</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Target</div>
+          <div class="detail-value">高校生・大学生・大学院生</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <!-- ── Guest Speakers ── -->
+    <section id="speakers">
+      <div class="section-label">// guest speakers</div>
+      <h2>GUEST SPEAKERS</h2>
+      <div class="glass-card" style="text-align: center; padding: 48px 32px;">
+        <span class="tba-badge">SPEAKERS — TBA</span>
+        <p style="margin-top: 16px; font-size: 14px; color: rgba(180,185,200,0.5);">
+          ゲストスピーカーは決定次第お知らせします
+        </p>
+      </div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <!-- ── Schedule ── -->
+    <section id="schedule">
+      <div class="section-label">// schedule</div>
+      <h2>SCHEDULE</h2>
+      <div class="glass-card" style="text-align: center; padding: 48px 32px;">
+        <span class="tba-badge">SCHEDULE — TBA</span>
+        <p style="margin-top: 16px; font-size: 14px; color: rgba(180,185,200,0.5);">
+          スケジュールは決定次第お知らせします
+        </p>
+      </div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <!-- ── Venue ── -->
+    <section id="venue">
+      <div class="section-label">// venue</div>
+      <h2>会場情報</h2>
+      <div class="glass-card" style="text-align: center; padding: 48px 32px;">
+        <span class="tba-badge">VENUE — TBA</span>
+        <p style="margin-top: 16px; font-size: 14px; color: rgba(180,185,200,0.5);">
+          会場は決定次第お知らせします
+        </p>
+      </div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <!-- ── Organising Team ── -->
+    <section id="team">
+      <div class="section-label">// organising team</div>
+      <h2>ORGANISING TEAM</h2>
+      <div class="team-grid">
+
+        <div class="team-card">
+          <div class="name">清水 紘輔</div>
+          <div class="affiliation">筑波大学 情報学群情報メディア創成学類</div>
+          <div class="interests">HCI / XR</div>
+          <div class="social"><a href="https://twitter.com/hong_shui26288" target="_blank" rel="noopener">@hong_shui26288</a></div>
+        </div>
+
+        <div class="team-card">
+          <div class="name">川村 賢人</div>
+          <div class="affiliation">早稲田大学 基幹理工学部</div>
+          <div class="interests">Jazz / 音楽</div>
+          <div class="social"><a href="https://x.com/Kent1729" target="_blank" rel="noopener">@Kent1729</a></div>
+        </div>
+
+        <div class="team-card">
+          <div class="name">高野 琉衣</div>
+          <div class="affiliation">早稲田大学 基幹理工学部</div>
+          <div class="interests"></div>
+          <div class="social"><a href="https://x.com/esc_voiced_iD" target="_blank" rel="noopener">@esc_voiced_iD</a></div>
+        </div>
+
+        <div class="team-card">
+          <div class="name">待山 真一</div>
+          <div class="affiliation">慶応義塾大学 理工学部</div>
+          <div class="interests"></div>
+          <div class="social"><a href="https://x.com/Ekoro764" target="_blank" rel="noopener">@Ekoro764</a></div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <!-- ── Special Thanks ── -->
+    <section id="thanks">
+      <div class="section-label">// special thanks</div>
+      <h2>SPECIAL THANKS</h2>
+      <div class="glass-card">
+        <ul style="list-style: none; padding: 0;">
+          <li style="padding: 4px 0;">原島 博 氏（東京大学 名誉教授）</li>
+          <li style="padding: 4px 0;">林 和弘 氏（文部科学省 NISTEP）</li>
+          <li style="padding: 4px 0;">渡辺 健堂 氏</li>
+          <li style="padding: 4px 0;">青山 柊太朗 氏</li>
+          <li style="padding: 4px 0;">田中 翔大 氏</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <!-- ── Registration ── -->
+    <section id="register">
+      <div class="section-label">// registration</div>
+      <h2>参加登録</h2>
+      <div class="glass-card">
+        <p>参加登録は準備が整い次第、こちらで受付を開始します。</p>
+        <br>
+        <p style="text-align: center;">
+          <span class="tba-badge">REGISTRATION — COMING SOON</span>
+        </p>
+      </div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <!-- ── Sponsorship ── -->
+    <section id="sponsor">
+      <div class="section-label">// sponsorship</div>
+      <h2>協賛</h2>
+      <p style="margin-bottom: 24px;">
+        Studemia は学生主体で運営しており、企業・団体の皆さまからのご支援を募集しております。
+      </p>
+      <div class="sponsor-plans">
+        <div class="sponsor-plan">
+          <h3>GOLD</h3>
+          <div class="price">一口 100,000円</div>
+          <ul>
+            <li>公式サイト・印刷物・ZINEへのロゴ掲載（大）</li>
+            <li>会場バナー掲示</li>
+            <li>参加枠 1名</li>
+          </ul>
+        </div>
+        <div class="sponsor-plan">
+          <h3>SILVER</h3>
+          <div class="price">一口 50,000円</div>
+          <ul>
+            <li>公式サイト・印刷物へのロゴ掲載（中）</li>
+            <li>参加枠 2名</li>
+          </ul>
+        </div>
+      </div>
+      <p style="margin-top: 24px; font-size: 14px; color: rgba(180,185,200,0.55);">
+        協賛をご検討の方は
+        <a href="mailto:info@studemia.org">info@studemia.org</a>
+        までご連絡ください。
+      </p>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <!-- ── Archives ── -->
+    <section id="archives">
+      <div class="section-label">// archives</div>
+      <h2>ARCHIVES</h2>
+      <div class="archive-item">
+        <h3>Studemia Summer Camp 2025</h3>
+        <p>「共同体をどのようにデザインするのか」をテーマに、茨城県つくば市にて開催。</p>
+      </div>
+      <div class="archive-item">
+        <h3>Studemia 合宿 2024 春</h3>
+        <p>「俯瞰知と好奇心」をテーマに上郷・森の家で開催。参加者 26 名。</p>
+      </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer>
+      <p>© 2027 Studemia &nbsp;|&nbsp; <a href="mailto:info@studemia.org">info@studemia.org</a></p>
+    </footer>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       Quantum +/− Background Animation
+       ═══════════════════════════════════════════════════ -->
+  <script>
+  const FONT_SIZE = 10;
+  const BG_COLOR = '#0a0a0c';
+  const canvas = document.getElementById('quantum-canvas');
+  const ctx = canvas.getContext('2d');
+  let cellW, cellH, cols, rows, scaledFont;
+
+  class QuantumWalk {
+    constructor(cols, rows, opts = {}) {
+      this.cols = cols; this.rows = rows; this.N = cols * rows;
+      this.J = opts.J ?? 0.5; this.dt = opts.dt ?? 0.02; this.damping = opts.damping ?? 0.9995;
+      this.psiRe = new Float32Array(this.N); this.psiIm = new Float32Array(this.N);
+      this.potential = new Float32Array(this.N);
+      this._dRe = new Float32Array(this.N); this._dIm = new Float32Array(this.N);
+      this._tmpRe = new Float32Array(this.N); this._tmpIm = new Float32Array(this.N);
+      this.sources = []; this.time = 0;
+    }
+    addSource(x, y, freq, amp, phase = 0) {
+      this.sources.push({ x: Math.round(x), y: Math.round(y), freq, amp, phase });
+    }
+    driveFromSources() {
+      for (const src of this.sources) {
+        const idx = src.y * this.cols + src.x;
+        if (idx >= 0 && idx < this.N) {
+          const phase = src.freq * this.time + src.phase;
+          const inj = src.amp * this.dt;
+          this.psiRe[idx] += inj * Math.cos(phase);
+          this.psiIm[idx] += inj * Math.sin(phase);
+        }
+      }
+    }
+    computeDerivative() {
+      const { cols, rows, J, psiRe, psiIm, potential, _dRe, _dIm } = this;
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const idx = r * cols + c;
+          const up = ((r > 0 ? r : rows) - 1) * cols + c;
+          const down = ((r + 1) % rows) * cols + c;
+          const left = r * cols + ((c > 0 ? c : cols) - 1);
+          const right = r * cols + ((c + 1) % cols);
+          const hR = psiRe[up]+psiRe[down]+psiRe[left]+psiRe[right];
+          const hI = psiIm[up]+psiIm[down]+psiIm[left]+psiIm[right];
+          const V = potential[idx];
+          _dRe[idx] = -J*(hI - 4*psiIm[idx]) + V*psiIm[idx];
+          _dIm[idx] = J*(hR - 4*psiRe[idx]) - V*psiRe[idx];
+        }
+      }
+    }
+    step() {
+      const { psiRe, psiIm, _dRe, _dIm, _tmpRe, _tmpIm, dt, N, damping } = this;
+      this.driveFromSources(); this.computeDerivative();
+      for (let i = 0; i < N; i++) {
+        _tmpRe[i] = psiRe[i] + _dRe[i]*dt*0.5; _tmpIm[i] = psiIm[i] + _dIm[i]*dt*0.5;
+      }
+      const sR = new Float32Array(psiRe), sI = new Float32Array(psiIm);
+      psiRe.set(_tmpRe); psiIm.set(_tmpIm); this.computeDerivative();
+      for (let i = 0; i < N; i++) {
+        psiRe[i] = (sR[i]+_dRe[i]*dt)*damping; psiIm[i] = (sI[i]+_dIm[i]*dt)*damping;
+      }
+      this.time += dt;
+    }
+    getDensityForDisplay() {
+      const { psiRe, psiIm, N } = this;
+      const prob = new Float32Array(N);
+      for (let i = 0; i < N; i++) prob[i] = psiRe[i]**2 + psiIm[i]**2;
+      const sorted = Float32Array.from(prob).sort();
+      const p95 = sorted[Math.floor(sorted.length*0.95)] || 1e-10;
+      const mx = Math.max(p95*2, 1e-10);
+      for (let i = 0; i < prob.length; i++) prob[i] = Math.min(prob[i]/mx, 1);
+      return prob;
+    }
+  }
+
+  let qw = null;
+
+  function setupCanvas() {
+    canvas.width = window.innerWidth * devicePixelRatio;
+    canvas.height = window.innerHeight * devicePixelRatio;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    scaledFont = FONT_SIZE * devicePixelRatio;
+    cellW = Math.ceil(scaledFont * 0.6); cellH = Math.ceil(scaledFont * 1.1);
+    cols = Math.floor(canvas.width / cellW); rows = Math.floor(canvas.height / cellH);
+  }
+
+  function initQW() {
+    qw = new QuantumWalk(cols, rows, { J: 0.4, dt: 0.025, damping: 0.9992 });
+    for (let sy = 0; sy < 3; sy++) {
+      for (let sx = 0; sx < 5; sx++) {
+        const x = Math.round(cols*(sx+0.5)/5), y = Math.round(rows*(sy+0.5)/3);
+        const amp = 2+Math.sin(sx*1.7+sy*2.3)*0.8;
+        const freq = 5.5+Math.cos(sx*0.9+sy*1.4)*1.5;
+        const phase = (sx*2.1+sy*3.7)%(Math.PI*2);
+        qw.addSource(x, y, amp, freq, phase);
+      }
+    }
+  }
+
+  function render(density) {
+    ctx.fillStyle = BG_COLOR;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const bT = Math.max(1, Math.round(scaledFont*0.14));
+    const hH = cellW*0.35, hV = cellH*0.35;
+    const t = performance.now();
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        let d = density[r*cols+c]; if (isNaN(d)) continue;
+        d = Math.pow(Math.max(0,d), 0.5); if (d < 0.02) continue;
+        const cx = c*cellW+cellW/2, cy = r*cellH+cellH/2;
+        const ph = c*0.37+r*0.71+c*7.3+r*13.7;
+        const rh = 0.5+0.5*Math.sin(t*0.008+ph);
+        const showP = (0.6*rh+0.4*Math.random()) < d;
+        const a = Math.min(0.55, d*0.65); if (a < 0.03) continue;
+        ctx.fillStyle = `rgba(130,150,180,${a.toFixed(2)})`;
+        ctx.fillRect(cx-hH, cy-bT/2, hH*2, bT);
+        if (showP) ctx.fillRect(cx-bT/2, cy-hV, bT, hV*2);
+      }
+    }
+  }
+
+  function animate() {
+    for (let i = 0; i < 8; i++) qw.step();
+    render(qw.getDensityForDisplay());
+    requestAnimationFrame(animate);
+  }
+
+  setupCanvas(); initQW(); animate();
+  window.addEventListener('resize', () => { setupCanvas(); initQW(); });
+  </script>
+</body>
+</html>
