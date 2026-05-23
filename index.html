@@ -85,12 +85,22 @@
     }
 
     nav .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-family: 'Orbitron', sans-serif;
       font-weight: 700;
       font-size: 14px;
       color: rgba(230, 225, 210, 0.9);
       letter-spacing: 0.12em;
       text-decoration: none;
+    }
+
+    nav .logo img {
+      height: 28px;
+      width: auto;
+      display: block;
+      opacity: 0.9;
     }
 
     nav .nav-links {
@@ -177,6 +187,20 @@
       max-width: none;
     }
 
+    .hero-logo {
+      width: clamp(120px, 18vw, 200px);
+      height: auto;
+      margin-bottom: 32px;
+      opacity: 0.92;
+      filter: drop-shadow(0 0 40px rgba(130, 180, 220, 0.15));
+      animation: logo-float 6s ease-in-out infinite;
+    }
+
+    @keyframes logo-float {
+      0%, 100% { transform: translateY(0); opacity: 0.92; }
+      50% { transform: translateY(-6px); opacity: 1; }
+    }
+
     .hero-title {
       font-family: 'Orbitron', sans-serif;
       font-weight: 900;
@@ -228,6 +252,71 @@
       border: none;
       height: 1px;
       background: linear-gradient(90deg, transparent, rgba(130,150,180,0.15), transparent);
+    }
+
+    /* ── Pillars ── */
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .pillar {
+      padding: 28px 24px;
+      background: rgba(15, 15, 20, 0.45);
+      border: 1px solid rgba(130, 150, 180, 0.08);
+      border-radius: 10px;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .pillar:hover {
+      border-color: rgba(130, 180, 220, 0.2);
+      background: rgba(20, 22, 30, 0.55);
+    }
+
+    .pillar .pillar-num {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: rgba(130, 180, 220, 0.55);
+      letter-spacing: 0.2em;
+      margin-bottom: 14px;
+    }
+
+    .pillar h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: rgba(230, 225, 210, 0.9);
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .pillar p {
+      font-size: 13.5px;
+      line-height: 1.8;
+      color: rgba(200, 200, 210, 0.7);
+    }
+
+    /* ── Quote ── */
+    .quote {
+      margin: 16px 0 4px;
+      padding: 18px 22px;
+      border-left: 2px solid rgba(130, 180, 220, 0.35);
+      background: rgba(130, 180, 220, 0.04);
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 14px;
+      color: rgba(210, 215, 225, 0.78);
+      line-height: 1.85;
+    }
+    .quote cite {
+      display: block;
+      margin-top: 8px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: rgba(130, 150, 180, 0.55);
+      letter-spacing: 0.1em;
+      font-style: normal;
     }
 
     /* ── Glass Card ── */
@@ -434,9 +523,13 @@
   <!-- ═══ Navigation ═══ -->
   <nav>
     <div class="nav-inner">
-      <a href="#" class="logo">STUDEMIA</a>
+      <a href="#" class="logo">
+        <img src="img/white_logo.png" alt="Studemia logo">
+        <span>STUDEMIA</span>
+      </a>
       <ul class="nav-links">
         <li><a href="#concept">Concept</a></li>
+        <li><a href="#values">Why</a></li>
         <li><a href="#details">Details</a></li>
         <li><a href="#speakers">Guests</a></li>
         <li><a href="#team">Team</a></li>
@@ -450,11 +543,12 @@
 
     <!-- ── Hero ── -->
     <section class="hero" id="top">
+      <img src="img/white_logo.png" alt="Studemia" class="hero-logo">
       <div class="hero-year">ACADEMIC UNCONFERENCE</div>
       <h1 class="hero-title">STUDEMIA<br>2027</h1>
       <p class="hero-tagline">
-        研究者・クリエイター・起業家の卵が集い、<br>
-        知の境界を超えて問いを紡ぐ学術イベント
+        論文市場の外側で、互いの問いを交差させる。<br>
+        先人の知恵に、自分たちの手でレファレンスを継ぎ足す学際合宿。
       </p>
       <div class="hero-scroll">↓ SCROLL</div>
     </section>
@@ -467,16 +561,59 @@
       <h2>CONCEPT</h2>
       <div class="glass-card">
         <p>
-          Studemia は、研究室の中では生まれないような議論に真剣に向き合うための学際学術イベントです。
-          参加者が抱える〈いま解きたい社会・研究・表現の問い〉を共有し合い、
-          即席チームでテーマを掘り下げ、プロトタイピング・議論を行います。
+          Studemia は、論文市場の外側で〈問い〉を交わすための学際学術合宿です。
+          互いの分野を交差させながら自分の研究を別の座標系から眺め直し、
+          先人の知恵に自分たちの手でレファレンスとアンチテーゼを継ぎ足していく。
+          ゲストの講演を一方通行で聴くのではなく、その内容を参加者全員で掘り、編み直すことで、
+          抽象的な議論を自分たちのものへと concrete に落とし込みます。
         </p>
-        <br>
-        <p style="color: rgba(130,180,220,0.65); font-family: 'Share Tech Mono', monospace; font-size: 13px;">
-          ▶ 問いを持ち寄る — 参加者が抱える問いを共有し合う<br>
-          ▶ 即席チームで実験する — アンカンファレンス形式でテーマを掘り下げる<br>
-          ▶ 知のすそ野を広げる — 分野を超えた議論と発見
+      </div>
+
+      <div class="pillars">
+        <div class="pillar">
+          <div class="pillar-num">PILLAR 01</div>
+          <h3>相対化</h3>
+          <p>学問の地図を俯瞰する。互いの分野を交差させることで、自分の問いを別の座標から眺め直す。</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">PILLAR 02</div>
+          <h3>具体化</h3>
+          <p>講演を聴くだけで終わらせない。レファレンス付け・アンチテーゼ付けを参加者全員で行い、先人の知恵を concrete に編み直す。</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">PILLAR 03</div>
+          <h3>プロセス共有</h3>
+          <p>「何を成したか」ではなく「どう辿り着いたか」。学際的に活動してきたゲストが、自身のプロセスそのものを語る。</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <!-- ── Why Studemia ── -->
+    <section id="values">
+      <div class="section-label">// why studemia</div>
+      <h2>WHY STUDEMIA</h2>
+
+      <div class="glass-card">
+        <h3 style="font-family:'Orbitron',sans-serif; letter-spacing:0.06em; margin-bottom:12px;">論文市場主義の外側で</h3>
+        <p>
+          論文を書くことだけが研究ではない、と考える人々の集まりです。
+          数値化される業績の手前にある〈純粋な科学的好奇心〉を失わないためのきっかけとなり、
+          分野や立場を超えて長く続く仲間に出会う場でありたいと考えています。
         </p>
+      </div>
+
+      <div class="glass-card">
+        <h3 style="font-family:'Orbitron',sans-serif; letter-spacing:0.06em; margin-bottom:12px;">ルーツを確認する場として</h3>
+        <p>
+          学際的に活動してきたゲストが「どういうことを考え、どう辿り着いたか」というプロセスそのものを共有することに、私たちは大きな価値を置いています。
+          原島 博 先生は、Studemia のような場を「自分のルーツを確認する場」と表現してくださいました。
+        </p>
+        <blockquote class="quote">
+          交わされた会話が誰かの人生に影響を与える — それは目的を持つというよりは、場のデザインによって、そういうものが生まれるかどうかが結構変わる。
+          <cite>— 原島 博 (東京大学 名誉教授)</cite>
+        </blockquote>
       </div>
     </section>
 
