@@ -503,6 +503,129 @@
       color: rgba(180, 185, 200, 0.55);
     }
 
+    /* ── Archive Feature Card (with photo) ── */
+    .archive-feature {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 28px;
+      padding: 24px;
+      background: rgba(15, 15, 20, 0.45);
+      border: 1px solid rgba(130, 150, 180, 0.08);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      align-items: stretch;
+    }
+
+    .archive-feature .archive-photo {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      min-height: 220px;
+      background: #111;
+    }
+
+    .archive-feature .archive-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(0.15) brightness(0.85);
+      transition: filter 0.4s;
+    }
+
+    .archive-feature:hover .archive-photo img {
+      filter: grayscale(0) brightness(0.95);
+    }
+
+    .archive-feature .archive-photo .photo-tag {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: rgba(230, 225, 210, 0.85);
+      background: rgba(0, 0, 0, 0.55);
+      padding: 4px 8px;
+      border-radius: 3px;
+      letter-spacing: 0.12em;
+    }
+
+    .archive-feature .archive-meta {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .archive-feature .archive-year {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: rgba(130, 180, 220, 0.6);
+      letter-spacing: 0.2em;
+      margin-bottom: 6px;
+    }
+
+    .archive-feature h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: rgba(230, 225, 210, 0.92);
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+
+    .archive-feature .archive-theme {
+      font-size: 15px;
+      color: rgba(210, 215, 225, 0.78);
+      margin-bottom: 14px;
+      line-height: 1.7;
+    }
+
+    .archive-feature .archive-facts {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px 18px;
+      margin-bottom: 14px;
+    }
+
+    .archive-feature .archive-facts li {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11.5px;
+      color: rgba(180, 185, 200, 0.6);
+      letter-spacing: 0.04em;
+      list-style: none;
+    }
+    .archive-feature .archive-facts li span {
+      color: rgba(130, 180, 220, 0.55);
+      margin-right: 6px;
+    }
+
+    .archive-feature .archive-link {
+      align-self: flex-start;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      color: rgba(130, 180, 220, 0.8);
+      border: 1px solid rgba(130, 180, 220, 0.3);
+      padding: 7px 14px;
+      border-radius: 4px;
+      letter-spacing: 0.12em;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .archive-feature .archive-link:hover {
+      background: rgba(130, 180, 220, 0.08);
+      border-color: rgba(130, 180, 220, 0.55);
+      color: rgba(180, 210, 240, 1);
+    }
+
+    @media (max-width: 720px) {
+      .archive-feature {
+        grid-template-columns: 1fr;
+      }
+      .archive-feature .archive-photo {
+        min-height: 200px;
+      }
+    }
+
     /* ── Footer ── */
     footer {
       text-align: center;
@@ -848,10 +971,29 @@
     <section id="archives">
       <div class="section-label">// archives</div>
       <h2>ARCHIVES</h2>
-      <div class="archive-item">
-        <h3>Studemia Summer Camp 2025</h3>
-        <p>「共同体をどのようにデザインするのか」をテーマに、茨城県つくば市にて開催。</p>
+      <p style="margin-bottom: 28px;">
+        Studemia はこれまで複数回の合宿を重ねてきました。各回のテーマと記録は以下からご覧いただけます。
+      </p>
+
+      <div class="archive-feature">
+        <div class="archive-photo">
+          <img src="img/summer2025_venue.webp" alt="旧小林邸 ひととき — Studemia Summer Camp 2025 会場">
+          <div class="photo-tag">VENUE — 旧小林邸 ひととき</div>
+        </div>
+        <div class="archive-meta">
+          <div class="archive-year">2025 — SUMMER CAMP</div>
+          <h3>Studemia Summer Camp 2025</h3>
+          <p class="archive-theme">「共同体をどのようにデザインするのか」<br>ヒト・モノ・コトをつなぐ仕組みを問い直す2日間。</p>
+          <ul class="archive-facts">
+            <li><span>DATE</span>2025.07.19 – 07.20</li>
+            <li><span>VENUE</span>旧小林邸 ひととき（つくば市）</li>
+            <li><span>GUESTS</span>江渡 浩一郎 / 林 和弘</li>
+            <li><span>FORMAT</span>1泊2日・合宿</li>
+          </ul>
+          <a href="https://suke-go.github.io/studemia-summer2025.github.io/" class="archive-link" target="_blank" rel="noopener">→ VISIT ARCHIVE SITE</a>
+        </div>
       </div>
+
       <div class="archive-item">
         <h3>Studemia 合宿 2024 春</h3>
         <p>「俯瞰知と好奇心」をテーマに上郷・森の家で開催。参加者 26 名。</p>
