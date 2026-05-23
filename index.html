@@ -490,7 +490,38 @@
       border-bottom: 1px solid rgba(130, 180, 220, 0.15);
     }
 
-    /* ── Sponsor ── */
+    /* ── Sponsor: Allocations ── */
+    .allocations {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 24px 0 40px;
+    }
+
+    .allocation {
+      padding: 18px 18px;
+      background: rgba(15, 15, 20, 0.35);
+      border-left: 2px solid rgba(130, 180, 220, 0.4);
+      border-radius: 4px;
+    }
+
+    .allocation .allocation-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: rgba(130, 180, 220, 0.55);
+      letter-spacing: 0.18em;
+      margin-bottom: 6px;
+    }
+
+    .allocation .allocation-label {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 14px;
+      color: rgba(220, 218, 210, 0.88);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    /* ── Sponsor: Plans ── */
     .sponsor-plans {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -498,45 +529,181 @@
     }
 
     .sponsor-plan {
-      padding: 28px 24px;
+      position: relative;
+      padding: 32px 26px 28px;
       background: rgba(15, 15, 20, 0.45);
       border: 1px solid rgba(130, 150, 180, 0.08);
       border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.3s, background 0.3s, transform 0.3s;
+    }
+
+    .sponsor-plan:hover {
+      border-color: rgba(130, 180, 220, 0.25);
+      background: rgba(20, 22, 30, 0.55);
+      transform: translateY(-2px);
+    }
+
+    .sponsor-plan.featured {
+      border-color: rgba(180, 200, 130, 0.35);
+      background: linear-gradient(180deg, rgba(50, 50, 35, 0.25), rgba(15, 15, 20, 0.5));
+    }
+
+    .sponsor-plan .featured-badge {
+      position: absolute;
+      top: -10px;
+      right: 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: rgba(20, 22, 12, 0.95);
+      background: rgba(210, 200, 130, 0.85);
+      padding: 3px 10px;
+      border-radius: 3px;
+      letter-spacing: 0.18em;
+    }
+
+    .sponsor-plan .tier-num {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: rgba(130, 150, 180, 0.45);
+      letter-spacing: 0.2em;
+      margin-bottom: 10px;
     }
 
     .sponsor-plan h3 {
-      font-family: 'Rajdhani', sans-serif;
-      font-weight: 600;
-      font-size: 18px;
-      color: rgba(230, 225, 210, 0.85);
-      margin-bottom: 4px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: rgba(230, 225, 210, 0.95);
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
     }
 
     .sponsor-plan .price {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 13px;
-      color: rgba(130, 180, 220, 0.7);
-      margin-bottom: 16px;
+      font-size: 14px;
+      color: rgba(130, 180, 220, 0.75);
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .sponsor-plan.featured .price {
+      color: rgba(220, 210, 150, 0.9);
+    }
+
+    .sponsor-plan .fit {
+      font-size: 12px;
+      color: rgba(180, 185, 200, 0.55);
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed rgba(130, 150, 180, 0.12);
     }
 
     .sponsor-plan ul {
       list-style: none;
       padding: 0;
+      flex: 1;
     }
 
     .sponsor-plan li {
       font-size: 13px;
-      color: rgba(200, 200, 210, 0.65);
-      padding: 4px 0;
-      padding-left: 16px;
+      color: rgba(200, 200, 210, 0.7);
+      padding: 5px 0;
+      padding-left: 18px;
       position: relative;
+      line-height: 1.6;
     }
 
     .sponsor-plan li::before {
       content: '›';
       position: absolute;
       left: 0;
-      color: rgba(130, 150, 180, 0.4);
+      color: rgba(130, 180, 220, 0.5);
+      font-weight: 600;
+    }
+
+    .sponsor-plan.featured li::before {
+      color: rgba(220, 210, 150, 0.7);
+    }
+
+    /* ── Individual support row ── */
+    .individual-support {
+      margin-top: 20px;
+      padding: 22px 24px;
+      background: rgba(15, 15, 20, 0.3);
+      border: 1px dashed rgba(130, 150, 180, 0.18);
+      border-radius: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .individual-support .indiv-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: rgba(130, 180, 220, 0.6);
+      letter-spacing: 0.18em;
+      margin-bottom: 6px;
+    }
+
+    .individual-support .indiv-title {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: rgba(230, 225, 210, 0.9);
+      margin-bottom: 4px;
+    }
+
+    .individual-support .indiv-desc {
+      font-size: 13px;
+      color: rgba(180, 185, 200, 0.65);
+      line-height: 1.7;
+    }
+
+    /* ── Sponsor CTA ── */
+    .sponsor-cta {
+      margin-top: 36px;
+      padding: 28px;
+      background: rgba(15, 15, 20, 0.5);
+      border: 1px solid rgba(130, 180, 220, 0.18);
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .sponsor-cta p {
+      font-size: 14px;
+      color: rgba(200, 200, 210, 0.75);
+      margin-bottom: 14px;
+    }
+
+    .sponsor-cta .cta-button {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      color: rgba(180, 210, 240, 0.95);
+      border: 1px solid rgba(130, 180, 220, 0.4);
+      padding: 11px 22px;
+      border-radius: 4px;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+
+    .sponsor-cta .cta-button:hover {
+      background: rgba(130, 180, 220, 0.1);
+      border-color: rgba(180, 210, 240, 0.7);
+      color: rgba(220, 235, 255, 1);
+    }
+
+    .sponsor-cta .cta-note {
+      margin-top: 12px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: rgba(130, 150, 180, 0.45);
+      letter-spacing: 0.08em;
     }
 
     /* ── Archives ── */
@@ -1045,34 +1212,95 @@
     <!-- ── Sponsorship ── -->
     <section id="sponsor">
       <div class="section-label">// sponsorship</div>
-      <h2>協賛</h2>
-      <p style="margin-bottom: 24px;">
-        Studemia は学生主体で運営しており、企業・団体の皆さまからのご支援を募集しております。
+      <h2>SPONSORSHIP</h2>
+      <p>
+        Studemia は学生・大学院生が運営する非営利の合宿型勉強会です。
+        参加者の負担を抑えつつ、ゲストの招聘や会場・宿泊費、ZINEの発行費を捻出するため、
+        企業・団体・個人の皆さまからのご支援を募っています。
       </p>
+
+      <div class="allocations">
+        <div class="allocation">
+          <div class="allocation-tag">USE — 01</div>
+          <div class="allocation-label">高校生・学生の参加費の軽減</div>
+        </div>
+        <div class="allocation">
+          <div class="allocation-tag">USE — 02</div>
+          <div class="allocation-label">ゲスト招聘・謝礼・交通費</div>
+        </div>
+        <div class="allocation">
+          <div class="allocation-tag">USE — 03</div>
+          <div class="allocation-label">会場費・宿泊費・食事</div>
+        </div>
+        <div class="allocation">
+          <div class="allocation-tag">USE — 04</div>
+          <div class="allocation-label">ZINE / 議論記録の編集・印刷</div>
+        </div>
+      </div>
+
+      <h3 style="font-family:'Orbitron',sans-serif; font-size:16px; letter-spacing:0.1em; margin-bottom:20px; color:rgba(230,225,210,0.85);">PLANS</h3>
+
       <div class="sponsor-plans">
-        <div class="sponsor-plan">
+
+        <div class="sponsor-plan featured">
+          <span class="featured-badge">FEATURED</span>
+          <div class="tier-num">TIER 01</div>
           <h3>GOLD</h3>
           <div class="price">一口 100,000円</div>
+          <div class="fit">企業として継続的に学際的人材育成を応援したい方向け</div>
           <ul>
-            <li>公式サイト・印刷物・ZINEへのロゴ掲載（大）</li>
+            <li>公式サイト・印刷物・ZINE へのロゴ掲載（大）</li>
             <li>会場バナー掲示</li>
+            <li>クロージングセッションでのご紹介</li>
+            <li>ZINE 巻末メッセージ掲載枠</li>
             <li>参加枠 1名</li>
           </ul>
         </div>
+
         <div class="sponsor-plan">
+          <div class="tier-num">TIER 02</div>
           <h3>SILVER</h3>
           <div class="price">一口 50,000円</div>
+          <div class="fit">研究室・スタートアップなど、複数名で参加・採用視点をお持ちの方向け</div>
           <ul>
             <li>公式サイト・印刷物へのロゴ掲載（中）</li>
+            <li>ZINE 内ロゴ掲載</li>
             <li>参加枠 2名</li>
           </ul>
         </div>
+
+        <div class="sponsor-plan">
+          <div class="tier-num">TIER 03</div>
+          <h3>BRONZE</h3>
+          <div class="price">一口 20,000円</div>
+          <div class="fit">小規模団体・個人事業の方や、まずは応援から始めたい方向け</div>
+          <ul>
+            <li>公式サイト・ZINE へのロゴ掲載（小）</li>
+            <li>Special Thanks クレジット</li>
+          </ul>
+        </div>
+
       </div>
-      <p style="margin-top: 24px; font-size: 14px; color: rgba(180,185,200,0.55);">
-        協賛をご検討の方は
-        <a href="mailto:info@studemia.org">info@studemia.org</a>
-        までご連絡ください。
-      </p>
+
+      <div class="individual-support">
+        <div style="flex: 1; min-width: 220px;">
+          <div class="indiv-label">— INDIVIDUAL SUPPORT</div>
+          <div class="indiv-title">個人サポーター</div>
+          <p class="indiv-desc">
+            金額は自由（目安 3,000円〜）。ZINE と公式サイトの Special Thanks にお名前を掲載します。
+            学生時代の自分を思い出してくださる方、後進を応援したい方からのご支援を歓迎します。
+          </p>
+        </div>
+        <a href="mailto:info@studemia.org?subject=Studemia%20個人サポーター" class="cta-button" style="font-family:'Share Tech Mono',monospace; font-size:12px; color:rgba(180,210,240,0.9); border:1px solid rgba(130,180,220,0.35); padding:9px 18px; border-radius:4px; letter-spacing:0.12em; text-decoration:none;">
+          → 個人で支援する
+        </a>
+      </div>
+
+      <div class="sponsor-cta">
+        <p>協賛のご検討・ご相談、また独自プラン（広告掲載・採用協力 等）のご提案も承っております。</p>
+        <a href="mailto:info@studemia.org?subject=Studemia%202027%20協賛について" class="cta-button">CONTACT — info@studemia.org</a>
+        <div class="cta-note">担当 / 川村 賢人 (Financial Chair)</div>
+      </div>
     </section>
 
     <div class="divider"><hr></div>
