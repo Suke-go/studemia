@@ -124,6 +124,27 @@
       color: rgba(230, 225, 210, 0.95);
     }
 
+    .nav-toggle {
+      display: none;
+      min-width: 48px;
+      min-height: 44px;
+      padding: 0 12px;
+      border: 1px solid rgba(130, 180, 220, 0.3);
+      border-radius: 4px;
+      background: rgba(15, 15, 20, 0.75);
+      color: rgba(220, 225, 235, 0.9);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid rgba(180, 210, 240, 0.95);
+      outline-offset: 4px;
+    }
+
     /* ── Section base ── */
     section {
       max-width: 900px;
@@ -225,7 +246,66 @@
       font-size: clamp(15px, 2.2vw, 20px);
       color: rgba(200, 200, 210, 0.65);
       max-width: 600px;
+      width: 100%;
       line-height: 1.8;
+    }
+
+    .hero-event-meta {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .hero-event-meta .meta-item {
+      min-width: 170px;
+      padding: 10px 16px;
+      border: 1px solid rgba(130, 180, 220, 0.16);
+      border-radius: 6px;
+      background: rgba(15, 15, 20, 0.5);
+    }
+
+    .hero-event-meta .meta-label {
+      display: block;
+      margin-bottom: 2px;
+      color: rgba(150, 175, 205, 0.75);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+    }
+
+    .hero-event-meta .meta-value {
+      color: rgba(230, 225, 210, 0.92);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .hero-actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 10px 20px;
+      border: 1px solid rgba(130, 180, 220, 0.42);
+      border-radius: 4px;
+      color: rgba(220, 235, 255, 0.96);
+      background: rgba(130, 180, 220, 0.08);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+    }
+
+    .hero-actions .secondary {
+      border-color: rgba(130, 150, 180, 0.18);
+      color: rgba(200, 205, 215, 0.8);
+      background: rgba(15, 15, 20, 0.35);
     }
 
     .hero-scroll {
@@ -864,10 +944,92 @@
 
     /* ── Responsive ── */
     @media (max-width: 640px) {
-      nav .nav-links { display: none; }
+      nav { padding: 0 16px; }
+      nav .nav-inner { height: 60px; }
+      nav .logo { font-size: 13px; }
+      nav .nav-links {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 12px;
+        right: 12px;
+        flex-direction: column;
+        gap: 0;
+        padding: 10px;
+        border: 1px solid rgba(130, 180, 220, 0.16);
+        border-radius: 8px;
+        background: rgba(10, 10, 12, 0.97);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+      }
+      nav .nav-links.is-open { display: flex; }
+      nav .nav-links a {
+        display: flex;
+        align-items: center;
+        min-height: 46px;
+        padding: 0 12px;
+        border-bottom: 1px solid rgba(130, 150, 180, 0.08);
+        font-size: 14px;
+      }
+      nav .nav-links li:last-child a { border-bottom: 0; }
+      .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
       section { padding: 80px 16px 40px; }
       .glass-card { padding: 20px 16px; }
-      .hero { padding: 100px 16px 60px; }
+      .hero {
+        min-height: 100svh;
+        padding: 96px 18px 48px;
+      }
+      .hero-logo {
+        width: 132px;
+        margin-bottom: 24px;
+      }
+      .hero-year {
+        margin-bottom: 24px;
+        font-size: 12px;
+        letter-spacing: 0.22em;
+      }
+      .hero-title {
+        font-size: clamp(38px, 14vw, 56px);
+        letter-spacing: 0.05em;
+      }
+      .hero-tagline {
+        max-width: 356px;
+        font-size: 15px;
+        line-height: 1.9;
+        overflow-wrap: anywhere;
+      }
+      .hero-tagline br { display: none; }
+      .hero-event-meta {
+        width: 100%;
+        max-width: 356px;
+        gap: 8px;
+      }
+      .hero-event-meta .meta-item {
+        flex: 1;
+        min-width: 0;
+        padding: 10px 8px;
+      }
+      .hero-event-meta .meta-value { font-size: 13px; }
+      .hero-actions {
+        width: 100%;
+        max-width: 356px;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .hero-actions a { width: 100%; min-height: 48px; }
+      .hero-scroll { display: none; }
+      .details-grid { grid-template-columns: 1fr; }
+      .individual-support { align-items: stretch; }
+      .individual-support .cta-button { width: 100%; text-align: center; }
+      footer { padding: 44px 16px 32px; font-size: 12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
@@ -880,11 +1042,11 @@
   <!-- ═══ Navigation ═══ -->
   <nav>
     <div class="nav-inner">
-      <a href="#" class="logo">
+      <a href="#top" class="logo">
         <img src="img/white_logo.png" alt="Studemia logo">
         <span>STUDEMIA</span>
       </a>
-      <ul class="nav-links">
+      <ul class="nav-links" id="primary-navigation">
         <li><a href="#concept">Concept</a></li>
         <li><a href="#values">Why</a></li>
         <li><a href="#influences">Influences</a></li>
@@ -892,7 +1054,9 @@
         <li><a href="#speakers">Guests</a></li>
         <li><a href="#team">Team</a></li>
         <li><a href="#sponsor">Sponsor</a></li>
+        <li><a href="#archives">Archives</a></li>
       </ul>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">MENU</button>
     </div>
   </nav>
 
@@ -908,6 +1072,20 @@
         専門の異なる仲間と問いを持ち寄り、<br>
         先人の知恵にじっくり向き合うための、学際的な勉強会。
       </p>
+      <div class="hero-event-meta" aria-label="開催情報">
+        <div class="meta-item">
+          <span class="meta-label">DATE</span>
+          <span class="meta-value">2026.09.11–09.12</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">VENUE</span>
+          <span class="meta-value">タカオネ</span>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <a href="#details">開催概要を見る</a>
+        <a href="#register" class="secondary">参加登録について</a>
+      </div>
       <div class="hero-scroll">↓ SCROLL</div>
     </section>
 
@@ -1056,15 +1234,11 @@
       <div class="details-grid">
         <div class="detail-item">
           <div class="detail-label">Date</div>
-          <div class="detail-value"><span class="tba-badge">TBA</span></div>
+          <div class="detail-value">2026年9月11日（金）– 9月12日（土）</div>
         </div>
         <div class="detail-item">
           <div class="detail-label">Venue</div>
-          <div class="detail-value"><span class="tba-badge">TBA</span></div>
-        </div>
-        <div class="detail-item">
-          <div class="detail-label">Format</div>
-          <div class="detail-value">オフライン合宿</div>
+          <div class="detail-value">タカオネ</div>
         </div>
         <div class="detail-item">
           <div class="detail-label">Target</div>
@@ -1108,9 +1282,9 @@
       <div class="section-label">// venue</div>
       <h2>会場情報</h2>
       <div class="glass-card" style="text-align: center; padding: 48px 32px;">
-        <span class="tba-badge">VENUE — TBA</span>
+        <span class="tba-badge">VENUE — タカオネ</span>
         <p style="margin-top: 16px; font-size: 14px; color: rgba(180,185,200,0.5);">
-          会場は決定次第お知らせします
+          2026年9月11日（金）– 9月12日（土）に開催予定です
         </p>
       </div>
     </section>
@@ -1298,7 +1472,7 @@
 
       <div class="sponsor-cta">
         <p>協賛のご検討・ご相談、また独自プラン（広告掲載・採用協力 等）のご提案も承っております。</p>
-        <a href="mailto:info@studemia.org?subject=Studemia%202027%20協賛について" class="cta-button">CONTACT — info@studemia.org</a>
+        <a href="mailto:info@studemia.org?subject=Studemia%202026%20協賛について" class="cta-button">CONTACT — info@studemia.org</a>
         <div class="cta-note">担当 / 川村 賢人 (Financial Chair)</div>
       </div>
     </section>
@@ -1326,9 +1500,8 @@
             <li><span>DATE</span>2026.07.19 – 07.20</li>
             <li><span>VENUE</span>旧小林邸 ひととき（つくば市）</li>
             <li><span>GUESTS</span>江渡 浩一郎 / 林 和弘</li>
-            <li><span>FORMAT</span>1泊2日・合宿</li>
           </ul>
-          <a href="https://suke-go.github.io/studemia-summer2025.github.io/" class="archive-link" target="_blank" rel="noopener">→ VISIT ARCHIVE SITE</a>
+          <a href="https://suke-go.github.io/studemia-summer2025.github.io/" class="archive-link" target="_blank" rel="noopener">Studemia Summer camp2025</a>
         </div>
       </div>
 
@@ -1349,6 +1522,27 @@
        Quantum +/− Background Animation
        ═══════════════════════════════════════════════════ -->
   <script>
+  const navToggle = document.querySelector('.nav-toggle');
+  const primaryNavigation = document.querySelector('.nav-links');
+
+  navToggle.addEventListener('click', () => {
+    const isOpen = primaryNavigation.classList.toggle('is-open');
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+  primaryNavigation.addEventListener('click', (event) => {
+    if (event.target.closest('a')) {
+      primaryNavigation.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      primaryNavigation.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.focus();
+    }
+  });
+
   const FONT_SIZE = 10;
   const BG_COLOR = '#0a0a0c';
   const canvas = document.getElementById('quantum-canvas');
@@ -1474,7 +1668,13 @@
     requestAnimationFrame(animate);
   }
 
-  setupCanvas(); initQW(); animate();
+  setupCanvas(); initQW();
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    for (let i = 0; i < 8; i++) qw.step();
+    render(qw.getDensityForDisplay());
+  } else {
+    animate();
+  }
   window.addEventListener('resize', () => { setupCanvas(); initQW(); });
   </script>
 </body>
