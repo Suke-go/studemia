@@ -822,6 +822,38 @@
       color: rgba(180, 185, 200, 0.55);
     }
 
+    /* ── Session Voices (quotes) ── */
+    .voices {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+
+    .voice {
+      position: relative;
+      padding: 20px 20px 18px;
+      background: rgba(15, 15, 20, 0.35);
+      border: 1px solid rgba(130, 150, 180, 0.06);
+      border-left: 2px solid rgba(180, 210, 170, 0.28);
+      border-radius: 8px;
+    }
+
+    .voice blockquote {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.85;
+      color: rgba(205, 210, 220, 0.82);
+    }
+
+    .voice .voice-note {
+      margin-top: 10px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: rgba(130, 150, 180, 0.45);
+    }
+
     /* ── Archive Feature Card (with photo) ── */
     .archive-feature {
       display: grid;
@@ -1536,6 +1568,45 @@
       <div class="archive-item">
         <h3>Studemia 合宿 2024 春</h3>
         <p>「俯瞰知と好奇心」をテーマに上郷・森の家で開催。参加者 26 名。</p>
+      </div>
+
+      <div class="section-label" style="margin-top: 32px;">// voices from the sessions</div>
+      <p style="margin-bottom: 4px;">
+        過去の合宿で交わされた言葉から。ゲスト講演と、その場で参加者が書き残したメモの抜粋です。
+      </p>
+      <div class="voices">
+        <div class="voice">
+          <blockquote>どんなに忙しくても、せめて10%は、今すぐは必要ないことに関心を持ってほしい。</blockquote>
+          <div class="voice-note">— ゲスト講演より</div>
+        </div>
+        <div class="voice">
+          <blockquote>競争の時代に立ち止まるのは、勇気がいる。けれど、時々立ち止まってほしい。ずっと走っていたら、視野が狭くなっていく。</blockquote>
+          <div class="voice-note">— ゲスト講演より</div>
+        </div>
+        <div class="voice">
+          <blockquote>鳥の目ではなく、蛙の目。上から全てを客観的に見るのではなく、他分野を見るときの主観性を大事にする。</blockquote>
+          <div class="voice-note">— 参加者メモより</div>
+        </div>
+        <div class="voice">
+          <blockquote>俯瞰知とは、相対化と深化。相対化するためには、自分の軸がないといけない。</blockquote>
+          <div class="voice-note">— 参加者メモより</div>
+        </div>
+        <div class="voice">
+          <blockquote>一人でダ・ヴィンチにはなれない。だから「集団としてのダ・ヴィンチ」をつくる。</blockquote>
+          <div class="voice-note">— ゲスト講演より</div>
+        </div>
+        <div class="voice">
+          <blockquote>分野が違っても、同じ「人」である。苦労しているところを分かり合えるかどうか。</blockquote>
+          <div class="voice-note">— 質疑応答より</div>
+        </div>
+        <div class="voice">
+          <blockquote>学際知をつくるには、それぞれの分野に手をつながせるコンセプトが要る。</blockquote>
+          <div class="voice-note">— 参加者メモより</div>
+        </div>
+        <div class="voice">
+          <blockquote>名刺に書いてある仕事の顔ではなく、自分自身の顔を持ってほしい。</blockquote>
+          <div class="voice-note">— ゲスト講演より</div>
+        </div>
       </div>
     </section>
 
