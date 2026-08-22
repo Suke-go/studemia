@@ -1258,8 +1258,15 @@
       }
       .hero-actions a { width: 100%; min-height: 48px; }
       .hero-scroll { display: none; }
-      .detail-row { flex-direction: column; gap: 4px; }
-      .detail-row .detail-label { flex-basis: auto; }
+      .detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+      .detail-row .detail-label {
+        flex-basis: auto;
+        opacity: 0.85;
+      }
       .individual-support { align-items: stretch; }
       .individual-support .cta-button { width: 100%; text-align: center; }
       .venue-section {
