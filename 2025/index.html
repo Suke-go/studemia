@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studemia Summer Camp 2025 – 共同体をどのようにデザインするのか</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--accent-blue:#e8f4ff;--accent-green:#e8fff4;--text:#222;--gray:#666;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    .archive-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:10px 20px;background:#f2f4f7;border-bottom:1px solid #dfe3e8;font-size:.85rem;color:#555;}
+    .archive-bar-tag{font-weight:700;letter-spacing:.12em;font-size:.7rem;color:#fff;background:#8a919b;padding:3px 8px;border-radius:3px;}
+    .archive-bar a{color:#2b6cb0;font-weight:600;text-decoration:none;}
+    .archive-bar a:hover{text-decoration:underline;}
+    body{font-family:'Noto Sans JP',sans-serif;background:#fff;color:var(--text);line-height:1.7;}
+    header{padding:5rem 1rem 3rem;text-align:center;}
+    header h1{font-size:3rem;font-weight:700;margin-bottom:0.4rem;letter-spacing:0.02em;}
+    .tagline{font-size:1.15rem;color:var(--gray);margin-bottom:1rem;}
+    nav{display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap;}
+    nav a{color:var(--gray);text-decoration:none;padding:0.5rem 1.2rem;border-radius:6px;transition:background .25s ease;}
+    nav a:hover{background:var(--accent-blue);}    
+    section{padding:4rem 1rem;max-width:960px;margin:auto;}
+    section:nth-of-type(even){background:#fafafa;}
+    h2{font-size:2rem;font-weight:600;margin-bottom:1.3rem;}
+    ul,li{list-style:none;}
+    .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.6rem;}
+    .card{padding:1.6rem;border:1px solid #e6e6e6;border-radius:12px;background:#fff;text-align:center;}
+    .card img{width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:0.8rem;}
+    .card h3{font-size:1.3rem;font-weight:600;margin-bottom:0.4rem;}
+    .card p{font-size:0.9rem;line-height:1.5;color:#444;}
+    .sns a{font-size:0.85rem;margin:0 0.4rem;color:var(--gray);text-decoration:none;}
+    .sns a:hover{text-decoration:underline;}
+    a.btn{display:inline-block;margin-top:1.2rem;background:#222;color:#fff;padding:1rem 1.8rem;border-radius:7px;text-decoration:none;transition:opacity .2s ease;}
+    a.btn:hover{opacity:.85;}
+    #gol-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;opacity:0.25;pointer-events:none;}
+    details{border:1px solid #e0e0e0;border-radius:8px;padding:0.8rem;margin-bottom:0.8rem;background:#fff;}
+    details summary{cursor:pointer;font-weight:600;}
+    time{font-family:monospace;margin-right:0.4rem;}
+    .news-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;}
+    .news-item{border-left:4px solid var(--accent-blue);padding:0.8rem 1rem;background:#fff;border-radius:6px;}
+    .news-item small{color:var(--gray);font-size:0.75rem;}
+    .thanks-list li{margin-bottom:0.5rem;}
+    /* schedule */
+    details{border:1px solid #e0e0e0;border-radius:8px;padding:0.8rem;margin-bottom:0.8rem;background:#fff;}
+    details summary{cursor:pointer;font-weight:600;}
+    time{font-family:monospace;margin-right:0.4rem;}
+    /* news section */
+    .news-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;}
+    .news-item{border-left:4px solid var(--accent-blue);padding:0.8rem 1rem;background:#fff;border-radius:6px;}
+    .news-item small{color:var(--gray);font-size:0.75rem;}
+
+    /* === Added/Modified CSS for Concept Section === */
+    section#concept {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.6rem;
+    }
+    .concept-text-content {
+      flex: 1;
+    }
+    .concept-image {
+      width: 200px;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 768px) {
+      section#concept {
+        flex-direction: column;
+        align-items: center;
+      }
+      .concept-image {
+        margin-top: 1.5rem;
+        width: 150px;
+      }
+    }
+    /* === End of Concept CSS === */
+
+    /* === CSS for Venue Section === */
+    #venue {
+      /* sectionの基本スタイルを継承 */
+    }
+    .venue-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.6rem;
+      background: #fff;
+      padding: 1.6rem;
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+      margin-top: 2rem;
+    }
+    .venue-image-container {
+      flex-basis: 300px;
+      flex-shrink: 0;
+    }
+    .venue-image-container img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      display: block;
+    }
+    /* image-placeholder class is no longer used with an actual image, but kept for reference if needed */
+    .image-placeholder {
+      border: 2px dashed var(--gray);
+      padding: 20px; text-align: center; background-color: #f9f9f9;
+      min-height: 200px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; border-radius: 8px;
+      font-size: 0.9em; color: var(--text);
+    }
+    .venue-details {
+      flex: 1;
+    }
+    .venue-details h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+    }
+    .venue-details h3 a {
+      text-decoration: none;
+      color: var(--text);
+    }
+    .venue-details h3 a:hover {
+      text-decoration: underline;
+      color: var(--accent-blue);
+    }
+    .venue-details p, .venue-details ul {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    .venue-details ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .venue-details > ul > li { /* Direct children li of .venue-details > ul */
+      margin-bottom: 0.5rem;
+      padding-left: 1.2em; 
+      position: relative;
+    }
+    .venue-details > ul > li::before { /* Custom bullet for top-level list items */
+      content: "✔"; 
+      position: absolute;
+      left: 0;
+      color: var(--accent-green);
+      font-size: 0.9em;
+      line-height: 1.5;
+    }
+    /* Nested list styles */
+    .venue-details ul ul {
+      list-style: disc; /* Standard disc bullet for nested lists */
+      padding-left: 20px; /* Indent nested list */
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .venue-details ul ul li {
+      padding-left: 0; /* Reset padding from parent li */
+      margin-bottom: 0.3rem;
+    }
+    .venue-details ul ul li::before {
+      content: none; /* No custom bullet for nested list items */
+    }
+
+
+    @media (max-width: 768px) {
+      .venue-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .venue-image-container {
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto 1.5rem auto;
+        flex-basis: auto;
+      }
+    }
+    /* === End of Venue CSS === */
+  </style>
+</head>
+<body>
+  <div class="archive-bar">
+    <span class="archive-bar-tag">ARCHIVE</span>
+    <span>このページは Studemia Summer Camp 2025 の記録です。</span>
+    <a href="/2026/">最新の開催情報を見る →</a>
+  </div>
+  <canvas id="gol-canvas"></canvas>
+
+  <header>
+    <h1>Studemia Summer Camp</h1>
+    <p class="tagline">Tsukuba, Ibaraki</p>
+    <nav>
+      <a href="#concept">コンセプト</a>
+      <a href="#news">News</a>
+      <a href="#details">開催概要</a>
+      <a href="#speakers">ゲスト</a>
+      <a href="#schedule">スケジュール</a>
+      <a href="#venue">会場情報</a>
+      <a href="#team">運営</a>
+      <a href="#register">参加登録</a>
+      <a href="#sponsor">協賛</a>
+      <a href="#archives">アーカイブ</a>
+      <a href="#next">次回 (2027)</a>
+    </nav>
+  </header>
+
+  <section id="concept">
+    <div class="concept-text-content">
+      <h2>Concept</h2>
+      <p><strong>Studemia Summer Camp</strong> は、研究者・クリエイター・起業家の卵が2日間こもり、<em>自分の知識のすそ野を広げる</em>機会を作ります。 また、研究室の中では生まれないような議論（科学そのものの枠組みに関する議論など）に真剣に向き合うための学術イベントです。<br>
+        ▶︎ <strong>問いを持ち寄る</strong> ― 参加者が抱える〈いま解きたい社会・研究・表現の問い〉を共有し合う。<br>
+        ▶︎ <strong>即席チームで実験する</strong> ― キーノートと <em>アンカンファレンス</em> 形式でテーマを掘り下げ、夜通しでプロトタイピング・議論をする。<br>
+        テーマ <strong>「共同体をどのようにデザインするのか」</strong> は、<u>ヒト・モノ・コトをつなぐ仕組み</u> を自分の中で問い直すことを目的としております。
+      </p>
+    </div>
+    <img src="img/logo.png" alt="Studemia Summer Camp Logo" class="concept-image">
+  </section>
+
+  <section id="news">
+    <h2>News</h2>
+   <div class="news-list">
+      <div class="news-item"><strong>2025-05-20</strong><br>公式サイトを公開しました！<br><small>Webチーム</small></div>
+      <div class="news-item"><strong>2025-05-20</strong><br>7/18につくばにて前夜祭を実施します。興味がある人は事前に予定を入れてください．<br><small>清水</small></div>
+      <div class="news-item"><strong>2025-06-01</strong><br>7/18 18:30より筑波大学3B棟（3B213）にて田中翔大と清水紘輔がセミナー形式でのプレゼンテーションを行います。筑波大学物理情報システム研究室との合同開催で，これはStudemiaの前夜祭も兼ねております。ケータリングが出ます。また、宿泊場所は清水宅を中心に用意をするので参加希望者は清水まで一報ください。<a href="https://sites.google.com/view/pis-univ-tsukuba/seminar-visitors?authuser=0">詳細はこちらへ</a>。<br><small>清水</small></div>
+      <div class="news-item"><strong>2025-06-06</strong><br>参加者登録を開始しました。皆さん奮って<a href="https://forms.gle/Vc5uY3jaesh8t14e8">ご応募</a>ください。<br><small>清水</small></div>
+  </section>
+
+  <section id="details">
+    <h2>Event Details</h2>
+    <ul>
+      <li><strong>日時：</strong>2025年7月19日(土) 13:30 – 7月20日(日) 15:00</li>
+      <li><strong>場所：</strong>茨城県つくば市</li>
+      <li><strong>形式：</strong>オフライン合宿（宿泊あり）</li>
+      <li><strong>対象：</strong>高校生・大学生・大学院生</li>
+      <li><strong>参加費：</strong>高校生：無料／大学生：6,500円／大学院生：7,000円（宿泊費込・税込）</li>
+      <li>※現在参加費を抑えるために動いているため，いったん仮押さえの参加費として頭に入れておいてください。</li>
+    </ul>
+  </section>
+
+  <section id="speakers">
+    <h2>Guest Speakers</h2>
+    <div class="card-grid">
+      <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Koichiro_Eto_20160130.jpg/250px-Koichiro_Eto_20160130.jpg" alt="江渡浩一郎">
+        <h3>江渡 浩一郎</h3>
+        <p>メディアアーティスト／情報科学者。ニコニコ学会β創設など市民科学の橋渡し役。学位は博士（情報理工学）。国立研究開発法人産業技術総合研究所、ニコニコ学会β実行委員会委員長、慶應義塾大学SFC 特別招聘教授を経て、現在はZEN大学教授。デジタルハリウッド大学大学院特任教授、人工知能学会理事を兼任。</p>
+      </div>
+      <div class="card">
+        <img src="https://www.nistep.go.jp/wp/wp-content/uploads/stfc-hayashi.jpg" alt="林和弘">
+        <h3>林 和弘</h3>
+        <p>NISTEP 上席フェロー。オープンサイエンス政策の第一人者、科学計量学研究者。日本学術会議、内閣府、文部科学省の委員等で日本のオープンサイエンス政策形成を支援し、G7科学技術大臣会合、OECD、UNESCOのプロジェクト等においてはオープンサイエンス専門家として、世界における新たな学術知を生み出す基盤のトップダウンのコンセンサスづくりに貢献。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="schedule">
+    <h2>Schedule</h2>
+    <h3>Day 1 – 7/19 (Sat)</h3>
+    <details><summary><time>13:30</time>集合 & Welcome Remarks</summary><p>担当: 清水</p></details>
+    <details><summary><time>13:45</time>江渡先生のセッション</summary><p>担当: 江渡浩一郎氏</p></details>
+    <details><summary><time>14:15</time>休憩 & ディスカッション</summary></details>
+    <details><summary><time>14:30</time>共同体をどのようにデザインするのか</summary><p>担当: 林和弘氏・江渡浩一郎氏 / 座長: 清水</p></details>
+    <details><summary><time>17:30</time>ディスカッション</summary><p>担当: 運営チーム</p></details>
+    <details><summary><time>19:00</time>ご飯</summary><p>担当: 高野</p></details>
+    <details><summary><time>20:30</time>ナイトセッション</summary><p>担当: 田中</p></details>
+    <details><summary><time>22:30</time>就寝</summary><p>古民家の中でぎゅうぎゅうになって睡眠をする予定です．何か特別な配慮が必要な場合は，info&lt;at&gt;studemia.orgにご連絡ください．なお男女は別の部屋に分ける予定です．</p></details>
+
+
+    <h3 style="margin-top:2rem;">Day 2 – 7/20 (Sun)</h3>
+    <details><summary><time>08:00</time>朝食</summary><p>担当: 高野｜朝食の前にシーツなどの交換にご協力いただければ大変うれしいです．朝食時間は融通が利くと思います．</p></details>
+    <details><summary><time>09:30</time>アンカンファレンス</summary><p>担当: 川村</p></details>
+    <details><summary><time>12:00</time>昼食</summary><p>ケータリング（弁当を手配する予定です）</p></details>
+    <details><summary><time>13:30</time>Closing Remarks</summary><p>担当: 清水｜協賛企業の皆さんのご紹介や会計状況などの共有、ZINEの発行についてお話します。</p></details>
+  </section>
+
+  <section id="venue">
+    <h2>Venue:</h2>
+    <div class="venue-container">
+      <div class="venue-image-container">
+        <img src="img/venue.webp" alt="旧小林邸 ひととき 会場の様子">
+      </div>
+      <div class="venue-details">
+        <h3>旧小林邸 ひととき</h3>
+        <p>筑波山の麓に佇む、趣のある古民家です。豊かな自然に囲まれた静かな環境で、特別なひとときをお過ごしいただけます。宿泊施設として、また各種イベントやワークショップのスペースとしても利用可能です。</p>
+        
+        <p><strong>所在地:</strong><br>
+        〒300-4352 茨城県つくば市筑波937</p>
+        
+        <p><strong>アクセス:</strong></p>
+        <ul>
+          <li><strong>自家用車でお越しの場合:</strong>
+            <ul>
+              <li>常磐道 谷田部ICから 約40分</li>
+              <li>常磐道 土浦北ICから 約35分</li>
+            </ul>
+          </li>
+          <li><strong>公共交通機関でお越しの場合:</strong>
+            <ul>
+              <li>つくばエクスプレス(TX) つくば駅より<br>筑波山シャトルバス乗車 約35分、「筑波山神社入口」下車、徒歩約7分</li>
+            </ul>
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+  </section>
+  <section id="team">
+    <h2>Organising Team</h2>
+    <div class="card-grid">
+      <div class="card">
+        <img src="https://pbs.twimg.com/profile_images/1719553746991235072/qzlc7WBZ_400x400.jpg" alt="Kosuke Shimizu">
+        <h3>清水 紘輔</h3>
+        <p><strong>Affiliation:</strong> 筑波大学 情報学群情報メディア創成学類</p>
+        <p><strong>Interests:</strong> HCI / XR </p>
+        <p class="sns"><a href="https://twitter.com/hong_shui26288" target="_blank">Twitter</a></p>
+      </div>
+      <div class="card">
+        <img src="https://pbs.twimg.com/profile_images/1748737317093974016/Xb_Uw8mv_400x400.jpg" alt="Kent Kawamura">
+        <h3>川村 賢人</h3>
+        <p><strong>Affiliation:</strong> 早稲田大学 基幹理工学部</p>
+        <p><strong>Interests:</strong> Jazz / 音楽</p>
+        <p class="sns"><a href="https://x.com/Kent1729" target="_blank">Twitter</a></p>
+      </div>
+      <div class="card">
+        <img src="https://pbs.twimg.com/profile_images/1865635775007858688/kv8c0_Jz_400x400.jpg" alt="Kyomu">
+        <h3>高野 琉衣</h3>
+        <p><strong>Affiliation:</strong> 早稲田大学 基幹理工学部</p>
+        <p><strong>Interests:</strong></p>
+        <p class="sns"><a href="https://x.com/esc_voiced_iD" target="_blank">Twitter</a></p>
+      </div>
+      <div class="card">
+        <img src="https://pbs.twimg.com/profile_images/1794497285604438016/4GV6dL5o_400x400.jpg" alt="Ekoro">
+        <h3>待山 真一</h3>
+        <p><strong>Affiliation:</strong> 慶応義塾大学 理工学部</p>
+        <p><strong>Interests:</strong></p>
+        <p class="sns"><a href="https://x.com/Ekoro764" target="_blank">X</a></p>
+      </div>
+    </div>
+  </section>
+  <section id="thanks">
+    <h2>Special Thanks</h2>
+    <ul class="thanks-list">
+      <li>原島 博 氏（東京大学 名誉教授）</li>
+      <li>林 和弘 氏（文部科学省 NISTEP）</li>
+      <li>渡辺 健堂 氏</li>
+      <li>青山 柊太朗 氏</li>
+      <li>田中 翔大 氏</li>
+    </ul>
+  </section>
+
+  <section id="register">
+    <h2>Registration</h2>
+    <p>お申し込みはこちらのサイトよりお願いします。なお参加費は今回は事前振り込みとなります。</p>
+    <a class="btn" href="https://forms.gle/EkoNvQtuRidib1Fs6" target="_blank" rel="noopener">参加登録フォームへ</a>
+  </section>
+
+  <section id="sponsor">
+    <h2>Sponsorship</h2>
+    <p>Studemia Summer Camp は学生主体で運営しており、企業・団体の皆さまからのご支援を募集しております。</p>
+    <div class="card-grid">
+      <div class="card">
+        <h3>ゴールドプラン<br><small>(一口 10 万円)</small></h3>
+        <ul>
+          <li>公式サイト・印刷物・当団体発行予定のZINEへのロゴ掲載（大）</li>
+          <li>会場バナー掲示</li>
+          <li>参加枠 1名</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>シルバープラン<br><small>(一口 5 万円)</small></h3>
+        <ul>
+          <li>公式サイト・印刷物へのロゴ掲載（中）</li>
+          <li>参加枠 2 名</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:1.2rem;">協賛をご検討の方は <a href="mailto:info@studemia.org">info&lt;at&gt;studemia.org</a> までご連絡ください。</p>
+  </section>
+
+  <section id="archives">
+    <h2>Archives</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>Studemia 合宿 2024 春</h3>
+        <p>「俯瞰知と好奇心」をテーマに上郷・森の家で開催。<br>参加者 26 名。</p>
+        <p>開催レポートはお待ちください</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="next">
+    <h2>Next: Studemia 2027</h2>
+    <p>このイベントの次回となる <strong>Studemia 2027</strong> の準備を進めています。コンセプト・開催概要・運営メンバー・協賛情報は新サイトでご覧いただけます。</p>
+    <a class="btn" href="https://suke-go.github.io/studemia/" target="_blank" rel="noopener">Studemia 2027 サイトへ →</a>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Studemia Summer Camp</p>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('gol-canvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, res = 12, cols, rows, curr, next;
+
+    function init() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      cols = Math.floor(w / res);
+      rows = Math.floor(h / res);
+      curr = new Array(cols * rows).fill(0).map(() => Math.random() > 0.8 ? 1 : 0);
+      next = new Array(cols * rows).fill(0);
+    }
+    const idx = (x, y) => y * cols + x;
+
+    function step() {
+      for (let y = 1; y < rows - 1; y++) {
+        for (let x = 1; x < cols - 1; x++) {
+          let sum = 0;
+          for (let j = -1; j <= 1; j++) {
+            for (let i = -1; i <= 1; i++) {
+              if (i || j) sum += curr[idx(x + i, y + j)];
+            }
+          }
+          const id = idx(x, y);
+          next[id] = (sum === 3 || (sum === 2 && curr[id])) ? 1 : 0;
+        }
+      }
+      [curr, next] = [next, curr];
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = 'rgba(160,160,160,0.4)';
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          if (curr[idx(x, y)]) ctx.fillRect(x * res, y * res, res, res);
+        }
+      }
+    }
+
+    function loop() {
+      step();
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    init();
+    loop();
+    window.addEventListener('resize', init);
+  </script>
+</body>
+</html>

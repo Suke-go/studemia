@@ -614,34 +614,71 @@
       border-color: rgba(220, 225, 205, 0.16);
     }
 
-    /* ── Details grid ── */
-    .details-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
+    /* ── Details list ── */
+    .details-list {
+      border-top: 1px solid rgba(130, 150, 180, 0.1);
     }
 
-    .detail-item {
-      padding: 24px;
-      background: rgba(15, 15, 20, 0.4);
-      border: 1px solid rgba(130, 150, 180, 0.06);
-      border-radius: 8px;
+    .detail-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 4px 24px;
+      padding: 18px 4px;
+      border-bottom: 1px solid rgba(130, 150, 180, 0.1);
     }
 
-    .detail-item .detail-label {
+    .detail-row .detail-label {
+      flex: 0 0 120px;
       font-family: 'Share Tech Mono', monospace;
       font-size: 10px;
-      color: rgba(130, 150, 180, 0.45);
+      color: rgba(130, 150, 180, 0.5);
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      margin-bottom: 8px;
     }
 
-    .detail-item .detail-value {
+    .detail-row .detail-value {
+      flex: 1 1 320px;
       font-family: 'Zen Kaku Gothic New', sans-serif;
       font-weight: 500;
       font-size: 16px;
-      color: rgba(220, 218, 210, 0.85);
+      color: rgba(220, 218, 210, 0.9);
+    }
+
+    .detail-row .detail-sub {
+      flex-basis: 100%;
+      margin-top: 4px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      color: rgba(130, 150, 180, 0.55);
+    }
+
+    .details-actions {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .calendar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: rgba(180, 210, 240, 0.9);
+      border: 1px solid rgba(130, 180, 220, 0.35);
+      padding: 10px 18px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .calendar-btn:hover {
+      border-color: rgba(180, 210, 240, 0.7);
+      color: rgba(220, 235, 250, 1);
     }
 
     /* ── Team grid ── */
@@ -709,38 +746,76 @@
       border-bottom: 1px solid rgba(130, 180, 220, 0.15);
     }
 
-    /* ── Sponsor: Allocations ── */
-    .allocations {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-      margin: 24px 0 40px;
-    }
-
-    .allocation {
-      padding: 18px 18px;
-      background: rgba(15, 15, 20, 0.35);
-      border-left: 2px solid rgba(130, 180, 220, 0.4);
-      border-radius: 4px;
-    }
-
-    .allocation .allocation-tag {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
-      color: rgba(130, 180, 220, 0.55);
-      letter-spacing: 0.18em;
-      margin-bottom: 6px;
-    }
-
-    .allocation .allocation-label {
-      font-family: 'Zen Kaku Gothic New', sans-serif;
-      font-size: 14px;
-      color: rgba(220, 218, 210, 0.88);
-      font-weight: 500;
-      line-height: 1.5;
-    }
-
     /* ── Sponsor: Plans ── */
+    /* ── Current sponsors ── */
+    .sponsors-current {
+      margin: 28px 0 40px;
+      padding: 24px 24px 26px;
+      background: rgba(15, 15, 20, 0.4);
+      border: 1px solid rgba(200, 175, 120, 0.14);
+      border-radius: 8px;
+    }
+
+    .sponsors-current .tier-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .sponsors-current .tier-head .tier-name {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      color: rgba(222, 196, 138, 0.95);
+    }
+
+    .sponsors-current .tier-head .tier-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba(200, 175, 120, 0.28),
+        rgba(200, 175, 120, 0.02)
+      );
+    }
+
+    .sponsor-logos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .sponsor-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 92px;
+      padding: 20px 22px;
+      text-align: center;
+      background: rgba(10, 10, 12, 0.45);
+      border: 1px solid rgba(200, 175, 120, 0.12);
+      border-radius: 6px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      line-height: 1.5;
+      color: rgba(235, 228, 210, 0.92);
+    }
+
+    .sponsor-logo.on-light {
+      background: rgba(245, 244, 240, 0.92);
+    }
+
+    .sponsor-logo img {
+      max-width: 100%;
+      max-height: 52px;
+      width: auto;
+      height: auto;
+    }
+
     .sponsor-plans {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -780,14 +855,6 @@
       padding: 3px 10px;
       border-radius: 3px;
       letter-spacing: 0.18em;
-    }
-
-    .sponsor-plan .tier-num {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
-      color: rgba(130, 150, 180, 0.45);
-      letter-spacing: 0.2em;
-      margin-bottom: 10px;
     }
 
     .sponsor-plan h3 {
@@ -1191,7 +1258,8 @@
       }
       .hero-actions a { width: 100%; min-height: 48px; }
       .hero-scroll { display: none; }
-      .details-grid { grid-template-columns: 1fr; }
+      .detail-row { flex-direction: column; gap: 4px; }
+      .detail-row .detail-label { flex-basis: auto; }
       .individual-support { align-items: stretch; }
       .individual-support .cta-button { width: 100%; text-align: center; }
       .venue-section {
@@ -1410,19 +1478,23 @@
     <section id="details">
       <div class="section-label">// event details</div>
       <h2>開催概要</h2>
-      <div class="details-grid">
-        <div class="detail-item">
+      <div class="details-list">
+        <div class="detail-row">
           <div class="detail-label">Date</div>
-          <div class="detail-value">2026年12月28日（月）– 12月29日（火）</div>
+          <div class="detail-value">2026年12月28日（月）13:00 – 12月29日（火）12:00</div>
         </div>
-        <div class="detail-item">
+        <div class="detail-row">
           <div class="detail-label">Venue</div>
-          <div class="detail-value">横浜市青少年野外活動センター 上郷・森の家</div>
+          <div class="detail-value">横浜市上郷・森の家</div>
+          <div class="detail-sub">〒247-0013 神奈川県横浜市栄区上郷町1499-1</div>
         </div>
-        <div class="detail-item">
+        <div class="detail-row">
           <div class="detail-label">Target</div>
           <div class="detail-value">高校生・大学生・大学院生</div>
         </div>
+      </div>
+      <div class="details-actions">
+        <a class="calendar-btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Studemia%202026&dates=20261228T040000Z%2F20261229T030000Z&details=%E5%AD%A6%E9%9A%9B%E7%9A%84%E5%AD%A6%E8%A1%93%E5%90%88%E5%AE%BF%E3%80%8CStudemia%202026%E3%80%8D%E3%81%AE%E9%96%8B%E5%82%AC%E6%A6%82%E8%A6%81%E3%81%A7%E3%81%99%E3%80%82%E8%A9%B3%E7%B4%B0%E3%81%AF%20https%3A%2F%2Fstudemia.org%2F2026%2F%20%E3%82%92%E3%81%94%E8%A6%A7%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82&location=%E6%A8%AA%E6%B5%9C%E5%B8%82%E4%B8%8A%E9%83%B7%E3%83%BB%E6%A3%AE%E3%81%AE%E5%AE%B6%20%E3%80%92247-0013%20%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E6%A8%AA%E6%B5%9C%E5%B8%82%E6%A0%84%E5%8C%BA%E4%B8%8A%E9%83%B7%E7%94%BA1499-1" target="_blank" rel="noopener">+ Google カレンダーに追加</a>
       </div>
     </section>
 
@@ -1630,32 +1702,21 @@
         企業・団体・個人の皆さまからのご支援を募っています。
       </p>
 
-      <div class="allocations">
-        <div class="allocation">
-          <div class="allocation-tag">USE — 01</div>
-          <div class="allocation-label">高校生・学生の参加費の軽減</div>
+      <div class="sponsors-current">
+        <div class="tier-head">
+          <span class="tier-name">GOLD SPONSORS</span>
+          <span class="tier-rule" aria-hidden="true"></span>
         </div>
-        <div class="allocation">
-          <div class="allocation-tag">USE — 02</div>
-          <div class="allocation-label">ゲスト招聘・謝礼・交通費</div>
-        </div>
-        <div class="allocation">
-          <div class="allocation-tag">USE — 03</div>
-          <div class="allocation-label">会場費・宿泊費・食事</div>
-        </div>
-        <div class="allocation">
-          <div class="allocation-tag">USE — 04</div>
-          <div class="allocation-label">ZINE / 議論記録の編集・印刷</div>
+        <div class="sponsor-logos">
+          <div class="sponsor-logo on-light"><img src="img/gakujyutsuba-.jpg" alt="学術バーQ"></div>
+          <div class="sponsor-logo"><img src="img/executive.png" alt="株式会社エグゼクティブ・ボード"></div>
         </div>
       </div>
-
-      <h3 style="font-family:'Orbitron',sans-serif; font-size:16px; letter-spacing:0.1em; margin-bottom:20px; color:rgba(230,225,210,0.85);">PLANS</h3>
 
       <div class="sponsor-plans">
 
         <div class="sponsor-plan featured">
           <span class="featured-badge">FEATURED</span>
-          <div class="tier-num">TIER 01</div>
           <h3>GOLD</h3>
           <div class="price">一口 100,000円</div>
           <div class="fit">企業として継続的に学際的人材育成を応援したい方向け</div>
@@ -1669,7 +1730,6 @@
         </div>
 
         <div class="sponsor-plan">
-          <div class="tier-num">TIER 02</div>
           <h3>SILVER</h3>
           <div class="price">一口 50,000円</div>
           <div class="fit">研究室・スタートアップなど、複数名で参加・採用視点をお持ちの方向け</div>
@@ -1681,7 +1741,6 @@
         </div>
 
         <div class="sponsor-plan">
-          <div class="tier-num">TIER 03</div>
           <h3>BRONZE</h3>
           <div class="price">一口 20,000円</div>
           <div class="fit">小規模団体・個人事業の方や、まずは応援から始めたい方向け</div>
@@ -1738,7 +1797,7 @@
             <li><span>VENUE</span>旧小林邸 ひととき（つくば市）</li>
             <li><span>GUESTS</span>江渡 浩一郎 / 林 和弘</li>
           </ul>
-          <a href="https://suke-go.github.io/studemia-summer2025.github.io/" class="archive-link" target="_blank" rel="noopener">Studemia Summer camp2025</a>
+          <a href="/2025/" class="archive-link">アーカイブサイトを見る</a>
         </div>
       </div>
 
