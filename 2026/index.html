@@ -464,6 +464,127 @@
     }
 
     /* ── TBA Badge ── */
+    /* ── Schedule ── */
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .day-column {
+      padding: 24px 24px 28px;
+      background: rgba(15, 15, 20, 0.4);
+      border: 1px solid rgba(130, 150, 180, 0.06);
+      border-radius: 8px;
+    }
+
+    .day-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(130, 150, 180, 0.1);
+    }
+
+    .day-head .day-no {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      color: rgba(230, 225, 210, 0.9);
+    }
+
+    .day-head .day-date {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: rgba(130, 150, 180, 0.5);
+    }
+
+    .timeline {
+      list-style: none;
+      position: relative;
+      padding-left: 22px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 6px;
+      bottom: 6px;
+      width: 1px;
+      background: linear-gradient(
+        180deg,
+        rgba(130, 150, 180, 0.05),
+        rgba(130, 150, 180, 0.22),
+        rgba(130, 150, 180, 0.05)
+      );
+    }
+
+    .timeline li {
+      position: relative;
+      padding-bottom: 20px;
+    }
+
+    .timeline li:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline li::before {
+      content: '';
+      position: absolute;
+      left: -22px;
+      top: 5px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: rgba(10, 10, 12, 0.9);
+      border: 1px solid rgba(130, 150, 180, 0.35);
+    }
+
+    .timeline li.is-session::before {
+      border-color: rgba(180, 210, 170, 0.75);
+      box-shadow: 0 0 10px rgba(180, 210, 170, 0.25);
+    }
+
+    .timeline .slot-time {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: rgba(130, 180, 220, 0.75);
+    }
+
+    .timeline .slot-name {
+      margin-top: 4px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.02em;
+      color: rgba(205, 210, 220, 0.6);
+    }
+
+    .timeline li.is-session .slot-name {
+      color: rgba(230, 225, 210, 0.95);
+    }
+
+    .timeline .slot-note {
+      margin-top: 4px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(180, 185, 200, 0.5);
+    }
+
+    .schedule-note {
+      margin-top: 20px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: rgba(130, 150, 180, 0.45);
+    }
+
     .tba-badge {
       display: inline-block;
       font-family: 'Share Tech Mono', monospace;
@@ -969,6 +1090,9 @@
     }
 
     @media (max-width: 720px) {
+      .schedule-grid {
+        grid-template-columns: 1fr;
+      }
       .archive-feature {
         grid-template-columns: 1fr;
       }
@@ -1322,12 +1446,65 @@
     <section id="schedule">
       <div class="section-label">// schedule</div>
       <h2>SCHEDULE</h2>
-      <div class="glass-card" style="text-align: center; padding: 48px 32px;">
-        <span class="tba-badge">SCHEDULE — TBA</span>
-        <p style="margin-top: 16px; font-size: 14px; color: rgba(180,185,200,0.5);">
-          スケジュールは決定次第お知らせします
-        </p>
+      <div class="schedule-grid">
+
+        <div class="day-column">
+          <div class="day-head">
+            <span class="day-no">DAY 01</span>
+            <span class="day-date">2026.12.28 MON</span>
+          </div>
+          <ol class="timeline">
+          <li>
+            <div class="slot-time">13:00</div>
+            <div class="slot-name">集合・受付</div>
+          </li>
+          <li class="is-session">
+            <div class="slot-time">14:00 – 15:30</div>
+            <div class="slot-name">自己紹介セッション</div>
+            <div class="slot-note">参加者それぞれの専門と、いま持っている問いを共有する。</div>
+          </li>
+          <li class="is-session">
+            <div class="slot-time">15:30 – 18:00</div>
+            <div class="slot-name">ゲストセッション</div>
+            <div class="slot-note">招聘ゲストによる講演と質疑応答。</div>
+          </li>
+          <li>
+            <div class="slot-time">18:00 – 19:30</div>
+            <div class="slot-name">チェックイン・夕食</div>
+          </li>
+          <li class="is-session">
+            <div class="slot-time">19:30 – 22:00</div>
+            <div class="slot-name">ナイトセッション</div>
+            <div class="slot-note">分野を横断して問いを持ち寄る、夜の議論。</div>
+          </li>
+          </ol>
+        </div>
+
+        <div class="day-column">
+          <div class="day-head">
+            <span class="day-no">DAY 02</span>
+            <span class="day-date">2026.12.29 TUE</span>
+          </div>
+          <ol class="timeline">
+          <li>
+            <div class="slot-time">08:00 – 09:00</div>
+            <div class="slot-name">朝食</div>
+          </li>
+          <li class="is-session">
+            <div class="slot-time">09:00 – 11:30</div>
+            <div class="slot-name">アンカンファレンスセッション</div>
+            <div class="slot-note">当日その場で参加者が議題を立て、並行して議論する。</div>
+          </li>
+          <li>
+            <div class="slot-time">11:30 – 12:00</div>
+            <div class="slot-name">クロージング</div>
+            <div class="slot-note">2日間の振り返りと総括。</div>
+          </li>
+          </ol>
+        </div>
+
       </div>
+      <p class="schedule-note">※ 内容は変更になる場合があります。ゲストは決定次第お知らせします。</p>
     </section>
 
     <div class="divider"><hr></div>
@@ -1357,7 +1534,7 @@
           <div class="name">清水 紘輔</div>
           <div class="affiliation">筑波大学 情報学群情報メディア創成学類</div>
           <div class="interests">HCI / XR</div>
-          <div class="social"><a href="https://twitter.com/hong_shui26288" target="_blank" rel="noopener">@hong_shui26288</a></div>
+          <div class="social"><a href="https://x.com/ksk432smz" target="_blank" rel="noopener">@ksk432smz</a></div>
         </div>
 
         <div class="team-card">
