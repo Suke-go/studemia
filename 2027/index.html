@@ -192,6 +192,27 @@
   }
   .tba-panel p { font-size: 13.5px; color: var(--text-dim); }
 
+  /* ── Party (team) ── */
+  .party-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 18px; }
+  .party-card {
+    display: flex; gap: 14px; align-items: center;
+    padding: 18px 18px; background: var(--panel-2);
+    box-shadow: inset 0 0 0 3px #0b0c14, inset 0 0 0 5px var(--xp);
+  }
+  .party-card .p-badge {
+    flex: none; width: 52px; height: 52px; display: grid; place-items: center;
+    overflow: hidden; background: var(--xp); clip-path: var(--slot-shape);
+  }
+  .party-card .p-badge img { width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; }
+  .party-card .p-info .p-role {
+    font-family: 'Press Start 2P', cursive; font-size: 8px; letter-spacing: .06em;
+    color: var(--accent-2); margin-bottom: 6px;
+  }
+  .party-card .p-info .p-name { font-family: var(--font-head); font-size: 15px; color: var(--text); margin-bottom: 4px; }
+  .party-card .p-info .p-sub { font-size: 12px; color: var(--text-dim); line-height: 1.7; }
+  .party-card .p-info .p-social a { color: var(--accent-2); font-size: 12px; text-decoration: none; }
+  .party-note { font-size: 13px; color: var(--text-dim); }
+
   /* ── Sponsor tiers ── */
   .tier-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
   .tier-card {
@@ -283,7 +304,7 @@
       専門の異なる仲間と問いを持ち寄り、先人の知恵にじっくり向き合うための、学際的な勉強会。
     </p>
     <div class="hero-meta">
-      <div class="m-tag"><span class="m-k">DATE</span><span class="m-v">TBA</span></div>
+      <div class="m-tag"><span class="m-k">DATE</span><span class="m-v">2027 SUMMER</span></div>
       <div class="m-tag"><span class="m-k">VENUE</span><span class="m-v">TBA</span></div>
     </div>
     <div class="hero-actions">
@@ -347,7 +368,7 @@
         <div class="q-item">
           <span class="q-bullet"></span>
           <span class="q-txt">Date<span class="q-sub">開催日</span></span>
-          <span class="q-status">TBA</span>
+          <span class="q-status">2027年夏 予定</span>
         </div>
         <div class="q-item">
           <span class="q-bullet"></span>
@@ -405,10 +426,18 @@
   <section id="team">
     <div class="section-label">// party</div>
     <h2 class="pixel-h">ORGANISING TEAM</h2>
-    <div class="panel-block tba-panel">
-      <span class="tba-badge">PARTY — FORMING</span>
-      <p>運営チームは結成中です。決定次第お知らせします。</p>
+    <div class="party-grid">
+      <div class="party-card">
+        <div class="p-badge"><img src="img/shimizu.jpg" alt="清水 紘輔"></div>
+        <div class="p-info">
+          <div class="p-role">GENERAL CHAIR</div>
+          <div class="p-name">清水 紘輔</div>
+          <div class="p-sub">筑波大学 情報学群情報メディア創成学類 / HCI・XR</div>
+          <div class="p-social"><a href="https://x.com/ksk432smz" target="_blank" rel="noopener">@ksk432smz</a></div>
+        </div>
+      </div>
     </div>
+    <p class="party-note">その他のメンバーは結成中です。決定次第お知らせします。</p>
   </section>
 
   <div class="divider"><hr></div>
