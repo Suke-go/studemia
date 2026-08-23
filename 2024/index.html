@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studemia Summer Camp 2024（アーカイブ）</title>
+<meta name="description" content="Studemia Summer Camp 2024 — 研究室を飛び出して学際的に学び合う">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: #222;
+    background: #fff;
+    line-height: 1.7;
+  }
+  a { color: inherit; }
+  img { display: block; max-width: 100%; }
+
+  /* ── Archive bar ── */
+  .archive-bar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;
+    padding: 10px 20px; background: #f2f4f7; border-bottom: 1px solid #dfe3e8;
+    font-size: .85rem; color: #555;
+  }
+  .archive-bar-tag {
+    font-weight: 700; letter-spacing: .12em; font-size: .7rem; color: #fff;
+    background: #8a919b; padding: 3px 8px; border-radius: 3px;
+  }
+  .archive-bar a { color: #2b6cb0; font-weight: 600; text-decoration: none; }
+  .archive-bar a:hover { text-decoration: underline; }
+  .archive-note {
+    max-width: 900px; margin: 18px auto 0; padding: 0 24px;
+    font-size: .8rem; color: #8a919b;
+  }
+
+  /* ── Header ── */
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 80px; padding: 0 30px; background: #fff;
+  }
+  header .logo img { height: 40px; width: 40px; }
+  nav.main-nav { display: flex; align-items: center; gap: 30px; }
+  nav.main-nav a {
+    font-family: 'Noto Sans JP', sans-serif; font-size: 15px; font-weight: 600;
+    text-decoration: none; color: #000;
+  }
+  nav.main-nav .register {
+    background: #000; color: #fff; border-radius: 8px; padding: 15px 30px;
+    font-weight: 700; margin-left: 10px; transition: transform .2s;
+  }
+  nav.main-nav .register:hover { transform: scale(1.05); }
+  @media (max-width: 840px) { nav.main-nav a:not(.register) { display: none; } }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative; min-height: 600px; display: flex; flex-direction: column;
+    justify-content: center; padding: 50px; color: #fff;
+    background: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url('img/hero_bg.jpg') center/cover no-repeat;
+  }
+  .hero h1 {
+    font-family: 'Lato', sans-serif; font-style: italic; font-weight: 900;
+    font-size: clamp(32px, 6vw, 64px); line-height: 1.3;
+  }
+
+  /* ── Sections ── */
+  section { padding: 60px 30px; }
+  .section-inner { max-width: 1280px; margin: 0 auto; }
+  .section-title {
+    font-family: 'Lato', sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 32px);
+    text-align: center;
+  }
+
+  /* About us */
+  #aboutus .section-inner {
+    display: flex; align-items: center; justify-content: space-between; gap: 40px;
+  }
+  #aboutus .about-text { flex: 1 1 45%; max-width: 45%; }
+  #aboutus h2 {
+    font-family: 'Noto Sans JP', sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 36px);
+    margin-bottom: 20px;
+  }
+  #aboutus .lead { font-size: 20px; margin-bottom: 35px; }
+  #aboutus .members-label { font-size: 16px; margin-bottom: 10px; }
+  .members-row { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
+  .member { display: flex; align-items: center; gap: 10px; }
+  .member img { width: 48px; height: 48px; border-radius: 48px; object-fit: cover; }
+  .member span { font-size: 16px; }
+  #aboutus .about-photo { flex: 1 1 50%; max-width: 50%; }
+  #aboutus .about-photo img { width: 100%; height: 364px; object-fit: cover; }
+  @media (max-width: 540px) {
+    #aboutus .section-inner { flex-direction: column-reverse; }
+    #aboutus .about-text, #aboutus .about-photo { max-width: 100%; }
+  }
+
+  /* Summer Camp features */
+  #summercamp { background: #fff; }
+  #summercamp > .section-inner > .section-title { margin-bottom: 30px; }
+  .feature-grid {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 20px;
+  }
+  .feature {
+    display: flex; align-items: flex-start; gap: 20px; width: 48%; margin-bottom: 50px;
+  }
+  .feature .material-icons { font-size: 48px; flex: none; }
+  .feature h3 { font-size: clamp(20px, 3vw, 24px); margin-bottom: 15px; }
+  .feature p { font-size: 16px; }
+  @media (max-width: 840px) { .feature { width: 100%; } }
+
+  /* Guests */
+  #guests { background: #000; color: #fff; }
+  #guests .section-title { color: #fff; margin-bottom: 20px; }
+  #guests .lead { text-align: center; font-size: 18px; margin-bottom: 60px; }
+  .guest-grid { display: flex; flex-wrap: wrap; justify-content: space-between; }
+  .guest-card { width: 31%; margin-bottom: 40px; }
+  .guest-card img { width: 100%; height: 250px; object-fit: cover; margin-bottom: 30px; }
+  .guest-card h3 { font-size: clamp(20px, 3vw, 24px); text-align: center; margin-bottom: 5px; }
+  .guest-card .en-name { font-size: 16px; margin-bottom: 15px; }
+  .guest-card p.bio { font-size: 16px; }
+  .guest-card.more { display: flex; flex-direction: column; justify-content: center; }
+  .guest-card.more h3 { text-align: left; }
+  @media (max-width: 840px) { .guest-card { width: 100%; } }
+
+  /* Place */
+  #place .section-inner { text-align: center; }
+  #place .section-title { margin-bottom: 0; }
+  #place .material-icons { font-size: 24px; margin: 10px 0; }
+  #place .venue-name { font-size: 20px; font-weight: 700; margin-top: 10px; }
+  #place .venue-addr { font-size: 14px; margin-bottom: 20px; }
+  .map-row { display: flex; justify-content: center; gap: 0; height: 270px; margin-top: 20px; }
+  .map-row iframe { width: 600px; max-width: 100%; height: 261px; border: 0; }
+  .map-row img { width: 370px; max-width: 100%; height: 261px; object-fit: cover; }
+
+  /* Footer */
+  footer { background: #000; color: #fff; padding: 60px 30px; }
+  footer .footer-inner {
+    max-width: 1280px; margin: 0 auto; display: flex; flex-wrap: wrap;
+    justify-content: space-between; gap: 20px;
+  }
+  footer .brand { width: 48%; }
+  footer .brand h3 { font-size: 28px; margin-bottom: 5px; }
+  footer .brand p { font-size: 16px; color: #ccc; }
+  footer .copyright { text-align: center; font-size: 13px; font-weight: 300; margin-top: 40px; color: #ccc; }
+  @media (max-width: 540px) { footer .brand { width: 100%; } }
+</style>
+</head>
+<body>
+
+<div class="archive-bar">
+  <span class="archive-bar-tag">ARCHIVE</span>
+  <span>このページは Studemia Summer Camp 2024 の記録です（元は STUDIO で作成・公開されていたページを保存用に複製）。</span>
+  <a href="/2026/">最新の開催情報を見る →</a>
+</div>
+
+<header>
+  <a class="logo" href="#top"><img src="img/logo.webp" alt="Studemia"></a>
+  <nav class="main-nav">
+    <a href="#aboutus">About us</a>
+    <a href="#summercamp">Event</a>
+    <a href="#guests">Guest</a>
+    <a href="#place">Place</a>
+    <a class="register" href="https://forms.gle/DkBr8PhcMgivPrSz8" target="_blank" rel="noopener">Registar</a>
+  </nav>
+</header>
+
+<div id="top" class="hero">
+  <h1>Studemia<br>SUMMER CAMP</h1>
+  <p style="font-size:28px;font-weight:700;margin-top:15px;">研究室を飛び出して学際的に学び合う</p>
+</div>
+
+<section id="aboutus">
+  <div class="section-inner">
+    <div class="about-text">
+      <h2>Studemiaとは？</h2>
+      <p class="lead">Studemiaとは、研究活動を行っている学生を中心に集まり、各自が行っている研究や、関連研究に関する勉強会、新技術を用いたハッカソンなどを行うゆるい学生集団です</p>
+      <p class="members-label">合宿運営メンバー</p>
+      <div class="members-row">
+        <div class="member"><img src="img/member_ksk432.webp" alt="ksk432"><span>ksk432</span></div>
+        <div class="member"><img src="img/member_kent.webp" alt="Kent"><span>Kent&nbsp;</span></div>
+        <div class="member"><img src="img/member_machyama.webp" alt="Machyama"><span>Machyama</span></div>
+        <div class="member"><img src="img/member_vode.webp" alt="Vode"><span>Vode</span></div>
+      </div>
+    </div>
+    <div class="about-photo">
+      <img src="img/aboutus_side.jpg" alt="">
+    </div>
+  </div>
+</section>
+
+<section id="summercamp">
+  <div class="section-inner">
+    <p class="section-title">Summer Camp</p>
+    <div class="feature-grid">
+      <div class="feature">
+        <i class="material-icons">chrome_reader_mode</i>
+        <div>
+          <h3>異分野の学生が集まる</h3>
+          <p>Studemiaで活動をしている学生を中心に、サイエンスからエンジニアリング、アート、哲学など幅広い分野の学生が集まり、「研究室内では起こらない議論」を行います。</p>
+        </div>
+      </div>
+      <div class="feature">
+        <i class="material-icons">assessment</i>
+        <div>
+          <h3>計画されたものより偶発的なものを</h3>
+          <p>Summer Campではディスカッション以外の時間にも注目します。キャンプ内で起こる偶発的な会話の中に、新たな発見等があることを想定しております。</p>
+        </div>
+      </div>
+      <div class="feature">
+        <i class="material-icons">assessment</i>
+        <div>
+          <h3>ノリつつシラけ、シラけつつノル姿勢</h3>
+          <p>合宿を通じてさまざまな分野の人々と議論・対話をすることを通じて、自分自身の分野に肯定的になりながら同時に否定的になる行動を通じて、新しい発見や考えの発見を目指します。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="guests">
+  <div class="section-inner">
+    <p class="section-title">Special Guest</p>
+    <p class="lead">本合宿の理念に共感をし、特別セッションを行ってくださるゲストの皆様</p>
+    <div class="guest-grid">
+      <div class="guest-card">
+        <img src="img/guest_harashima.webp" alt="原島 博氏">
+        <h3>原島 博氏</h3>
+        <p class="en-name">Hiroshi Harashima</p>
+        <p class="bio">東京大学名誉教授。研究分野は情報理論、信号処理、ヒューマンコミュニケーション技術、顔学など。東京大学大学院 情報学環の立ち上げなど、文系・理系・アート・科学の垣根を超えた学問体系の構築に尽力された。現在は、ＨＣ塾と称する個人講演会を、２０１１年６月から毎月開催している。</p>
+      </div>
+      <div class="guest-card">
+        <img src="img/guest_hayashi.webp" alt="林 和弘氏">
+        <h3>林 和弘氏</h3>
+        <p class="en-name">Kaz Hayashi</p>
+        <p class="bio">文部科学省 科学技術・学術政策研究所 データ解析政策研究室長。1995年頃から日本化学会の英文誌の電子ジャーナル化を皮切りに、学術情報流通の変革とオープンサイエンスの推進に取り組む。現在は、オープンサイエンス推進と教育に従事しつつ、日本の学術ジャーナルの発展にも寄与している。</p>
+      </div>
+      <div class="guest-card more">
+        <h3>And more...</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="place">
+  <div class="section-inner">
+    <p class="section-title">開催場所</p>
+    <i class="material-icons">remove</i>
+    <p class="venue-name">横浜市上郷・森の家</p>
+    <p class="venue-addr">〒247-0013 神奈川県横浜市栄区上郷町１４９９−１</p>
+    <div class="map-row">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3254.471045833457!2d139.5808331757727!3d35.343954572697996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018444186a2700f%3A0x4f3c302ff3b40388!2z5LiK6YO344O75qOu44Gu5a62!5e0!3m2!1sja!2sjp!4v1720032014195!5m2!1sja!2sjp" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      <img src="img/venue_photo.webp" alt="横浜市上郷・森の家">
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="brand">
+      <h3>Studemia</h3>
+      <p>ごめんなさい！実は，時間がなくてSTUDIOでつくっちゃいました...次回はちゃんと鯖立てて進めます！</p>
+    </div>
+  </div>
+  <p class="copyright">©︎ 2024 Studemia</p>
+</footer>
+
+</body>
+</html>
