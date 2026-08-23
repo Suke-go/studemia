@@ -614,6 +614,60 @@
       border-color: rgba(220, 225, 205, 0.16);
     }
 
+    .venue-address {
+      margin-top: 10px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12.5px;
+      letter-spacing: 0.03em;
+      color: rgba(180, 185, 200, 0.55);
+    }
+
+    .venue-map {
+      margin-top: 24px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(220, 225, 205, 0.14);
+      filter: grayscale(0.25) contrast(1.05);
+    }
+    .venue-map iframe {
+      display: block;
+      width: 100%;
+      height: 320px;
+      border: 0;
+    }
+
+    .venue-photo {
+      margin-top: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(220, 225, 205, 0.14);
+    }
+    .venue-photo img {
+      display: block;
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      object-position: center 40%;
+    }
+    .venue-photo .venue-photo-cap {
+      padding: 10px 14px;
+      background: rgba(10, 10, 12, 0.7);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: rgba(180, 185, 200, 0.5);
+    }
+
+    .venue-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    @media (max-width: 640px) {
+      .venue-map iframe, .venue-photo img { height: 220px; }
+    }
+
     /* ── Details list ── */
     .details-list {
       border-top: 1px solid rgba(130, 150, 180, 0.1);
@@ -1471,7 +1525,7 @@
         <div class="detail-row">
           <div class="detail-label">Venue</div>
           <div class="detail-value">横浜市上郷・森の家</div>
-          <div class="detail-sub">〒247-0013 神奈川県横浜市栄区上郷町1499-1</div>
+          <div class="detail-sub">〒247-0013 横浜市栄区上郷町1499-1</div>
         </div>
         <div class="detail-row">
           <div class="detail-label">Target</div>
@@ -1479,7 +1533,7 @@
         </div>
       </div>
       <div class="details-actions">
-        <a class="calendar-btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Studemia%202026&dates=20261228T040000Z%2F20261229T030000Z&details=%E5%AD%A6%E9%9A%9B%E7%9A%84%E5%AD%A6%E8%A1%93%E5%90%88%E5%AE%BF%E3%80%8CStudemia%202026%E3%80%8D%E3%81%AE%E9%96%8B%E5%82%AC%E6%A6%82%E8%A6%81%E3%81%A7%E3%81%99%E3%80%82%E8%A9%B3%E7%B4%B0%E3%81%AF%20https%3A%2F%2Fstudemia.org%2F2026%2F%20%E3%82%92%E3%81%94%E8%A6%A7%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82&location=%E6%A8%AA%E6%B5%9C%E5%B8%82%E4%B8%8A%E9%83%B7%E3%83%BB%E6%A3%AE%E3%81%AE%E5%AE%B6%20%E3%80%92247-0013%20%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E6%A8%AA%E6%B5%9C%E5%B8%82%E6%A0%84%E5%8C%BA%E4%B8%8A%E9%83%B7%E7%94%BA1499-1" target="_blank" rel="noopener">+ Google カレンダーに追加</a>
+        <a class="calendar-btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Studemia%202026&dates=20261228T040000Z%2F20261229T030000Z&details=%E5%AD%A6%E9%9A%9B%E7%9A%84%E5%AD%A6%E8%A1%93%E5%90%88%E5%AE%BF%E3%80%8CStudemia%202026%E3%80%8D%E3%81%AE%E9%96%8B%E5%82%AC%E6%A6%82%E8%A6%81%E3%81%A7%E3%81%99%E3%80%82%E8%A9%B3%E7%B4%B0%E3%81%AF%20https%3A%2F%2Fstudemia.org%2F2026%2F%20%E3%82%92%E3%81%94%E8%A6%A7%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82&location=%E6%A8%AA%E6%B5%9C%E5%B8%82%E4%B8%8A%E9%83%B7%E3%83%BB%E6%A3%AE%E3%81%AE%E5%AE%B6%20%E3%80%92247-0013%20%E6%A8%AA%E6%B5%9C%E5%B8%82%E6%A0%84%E5%8C%BA%E4%B8%8A%E9%83%B7%E7%94%BA1499-1" target="_blank" rel="noopener">+ Google カレンダーに追加</a>
       </div>
     </section>
 
@@ -1570,11 +1624,24 @@
     <section id="venue" class="venue-section">
       <div class="section-label">// venue</div>
       <h2>会場情報</h2>
-      <div class="glass-card" style="text-align: center; padding: 48px 32px;">
-        <span class="tba-badge">VENUE — 上郷・森の家</span>
-        <p style="margin-top: 16px; font-size: 14px; color: rgba(180,185,200,0.5);">
-          2026年12月28日（月）– 12月29日（火）に開催予定です
-        </p>
+      <div class="glass-card" style="padding: 40px 32px;">
+        <div style="text-align: center;">
+          <span class="tba-badge">VENUE — 横浜市上郷・森の家</span>
+          <p style="margin-top: 16px; font-size: 14px; color: rgba(180,185,200,0.5);">
+            2026年12月28日（月）– 12月29日（火）に開催予定です
+          </p>
+          <p class="venue-address">〒247-0013 横浜市栄区上郷町1499-1</p>
+        </div>
+
+        <div class="venue-grid">
+          <div class="venue-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3254.471045833457!2d139.5808331757727!3d35.343954572697996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018444186a2700f%3A0x4f3c302ff3b40388!2z5LiK6YO344O75qOu44Gu5a62!5e0!3m2!1sja!2sjp!4v1720032014195!5m2!1sja!2sjp" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen title="横浜市上郷・森の家 地図"></iframe>
+          </div>
+          <div class="venue-photo">
+            <img src="img/summer2025_discussion.jpg" alt="Studemia Summer Camp 2025 の夜のディスカッションの様子">
+            <div class="venue-photo-cap">合宿の夜は、こんな雰囲気で議論が続きます（Summer Camp 2025）</div>
+          </div>
+        </div>
       </div>
     </section>
 
