@@ -233,6 +233,25 @@
     color: var(--text-dim); letter-spacing: .04em; line-height: 2;
   }
 
+  /* ── Voices ── */
+  .voices {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+  }
+  .voice {
+    padding: 18px 18px 16px;
+    background: var(--panel-2);
+    box-shadow: inset 0 0 0 3px #0b0c14, inset 0 0 0 5px var(--accent-2);
+  }
+  .voice blockquote {
+    margin: 0; font-size: 13.5px; line-height: 1.85; color: var(--text-dim);
+  }
+  .voice .voice-note {
+    margin-top: 10px; font-family: 'Press Start 2P', cursive; font-size: 8px;
+    letter-spacing: .06em; color: var(--accent-2);
+  }
+
   /* ── Archives ── */
   .archive-links { display: flex; flex-direction: column; gap: 12px; }
   .archive-links a {
@@ -388,7 +407,7 @@
 
   <!-- ── Guest Speakers ── -->
   <section id="speakers">
-    <div class="section-label">// npc encounter</div>
+    <div class="section-label">// boss encounter</div>
     <h2 class="pixel-h">GUEST SPEAKERS</h2>
     <div class="panel-block tba-panel">
       <span class="tba-badge">??? — LOCKED</span>
@@ -487,6 +506,67 @@
       </div>
     </div>
     <p class="sponsor-note">※ 2026 実績をもとにした仮プランです。金額・特典は確定次第更新します。</p>
+  </section>
+
+  <div class="divider"><hr></div>
+
+  <!-- ── Voices ── -->
+  <section id="voices">
+    <div class="section-label">// voices from the sessions</div>
+    <h2 class="pixel-h">VOICES</h2>
+    <p style="margin-bottom: 20px; font-size: 13.5px; color: var(--text-dim);">
+      過去の合宿で交わされた言葉から。ゲスト講演と、その場で参加者が書き残したメモの抜粋です。
+    </p>
+    <div class="voices">
+      <div class="voice">
+        <blockquote>どんなに忙しくても、せめて10%は、今すぐは必要ないことに関心を持ってほしい。</blockquote>
+        <div class="voice-note">— ゲスト講演より</div>
+      </div>
+      <div class="voice">
+        <blockquote>競争の時代に立ち止まるのは、勇気がいる。けれど、時々立ち止まってほしい。ずっと走っていたら、視野が狭くなっていく。</blockquote>
+        <div class="voice-note">— ゲスト講演より</div>
+      </div>
+      <div class="voice">
+        <blockquote>鳥の目ではなく、蛙の目。上から全てを客観的に見るのではなく、他分野を見るときの主観性を大事にする。</blockquote>
+        <div class="voice-note">— 参加者メモより</div>
+      </div>
+      <div class="voice">
+        <blockquote>俯瞰知とは、相対化と深化。相対化するためには、自分の軸がないといけない。</blockquote>
+        <div class="voice-note">— 参加者メモより</div>
+      </div>
+      <div class="voice">
+        <blockquote>一人でダ・ヴィンチにはなれない。だから「集団としてのダ・ヴィンチ」をつくる。</blockquote>
+        <div class="voice-note">— ゲスト講演より</div>
+      </div>
+      <div class="voice">
+        <blockquote>分野が違っても、同じ「人」である。苦労しているところを分かり合えるかどうか。</blockquote>
+        <div class="voice-note">— 質疑応答より</div>
+      </div>
+      <div class="voice">
+        <blockquote>学際知をつくるには、それぞれの分野に手をつながせるコンセプトが要る。</blockquote>
+        <div class="voice-note">— 参加者メモより</div>
+      </div>
+      <div class="voice">
+        <blockquote>名刺に書いてある仕事の顔ではなく、自分自身の顔を持ってほしい。</blockquote>
+        <div class="voice-note">— ゲスト講演より</div>
+      </div>
+      <div class="voice">
+        <blockquote>今あるアカデミアの仕組みは、歴史的には割と最近生まれたもの。今の大学だけが研究の形ではない。仕組み自体も、自分たちで自由に作ればいい。</blockquote>
+        <div class="voice-note">— ゲスト講演より</div>
+      </div>
+      <div class="voice">
+        <blockquote>技術のある市民が科学をハッキングする。</blockquote>
+        <div class="voice-note">— ゲスト講演より</div>
+      </div>
+      <div class="voice">
+        <blockquote>究極の意味でのシチズンサイエンスとは、市民が「被験者」になるのではなく、自発的に研究活動を行っていくこと。</blockquote>
+        <div class="voice-note">— 参加者メモより</div>
+      </div>
+      <div class="voice">
+        <blockquote>研究者としての独自性を確保していきながら、共有知を模索する。</blockquote>
+        <div class="voice-note">— 参加者メモより</div>
+      </div>
+    </div>
   </section>
 
   <div class="divider"><hr></div>

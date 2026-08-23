@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Studemia 2026</title>
-  <meta name="description" content="Studemia 2026 — 学生主体の学際学術イベント">
+  <title>Studemia Wintercamp 2026</title>
+  <meta name="description" content="Studemia Wintercamp 2026 — 学生主体の学際学術イベント">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1222,6 +1222,81 @@
       }
     }
 
+    /* ── Next-year teaser ── */
+    .next-teaser {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      text-align: center;
+      background: #08090c;
+      border: 1px solid rgba(120, 210, 140, 0.25);
+      border-radius: 10px;
+      box-shadow: inset 0 0 0 1px rgba(120, 210, 140, 0.08);
+    }
+    .next-teaser::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(120, 210, 140, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(120, 210, 140, 0.06) 1px, transparent 1px);
+      background-size: 22px 22px;
+      opacity: 0.5;
+    }
+    .next-teaser .nt-eyebrow {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: rgba(120, 210, 140, 0.65);
+      margin-bottom: 10px;
+    }
+    .next-teaser .nt-eyebrow::after {
+      content: '_';
+      animation: nt-blink 1s steps(1) infinite;
+    }
+    @keyframes nt-blink { 50% { opacity: 0; } }
+    .next-teaser h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: clamp(20px, 4vw, 30px);
+      letter-spacing: 0.04em;
+      color: rgba(230, 225, 210, 0.95);
+      margin-bottom: 10px;
+    }
+    .next-teaser p {
+      font-size: 13px;
+      color: rgba(180, 185, 200, 0.5);
+      margin-bottom: 20px;
+    }
+    .next-teaser a.nt-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      color: rgba(120, 230, 150, 0.95);
+      border: 1px solid rgba(120, 210, 140, 0.4);
+      padding: 10px 22px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .next-teaser a.nt-btn:hover {
+      background: rgba(120, 210, 140, 0.12);
+    }
+    .next-teaser a.nt-btn .nt-arrow {
+      transition: transform 0.2s;
+    }
+    .next-teaser a.nt-btn:hover .nt-arrow {
+      transform: translateX(4px);
+    }
+
+    /* ── Footer ── */
     /* ── Footer ── */
     footer {
       text-align: center;
@@ -1375,7 +1450,7 @@
     <section class="hero" id="top">
       <img src="img/white_logo.png" alt="Studemia" class="hero-logo">
       <div class="hero-year">ACADEMIC UNCONFERENCE</div>
-      <h1 class="hero-title">STUDEMIA<br>2026</h1>
+      <h1 class="hero-title">STUDEMIA<br>WINTERCAMP 2026</h1>
       <p class="hero-tagline">
         専門の異なる仲間と問いを持ち寄り、<br>
         先人の知恵にじっくり向き合うための、学際的な勉強会。
@@ -1826,8 +1901,12 @@
     </section>
 
     <div class="divider"><hr></div>
-          <div class="section-label" style="margin-top: 32px;">// voices from the sessions</div>
-      <p style="margin-bottom: 4px;">
+
+    <!-- ── Voices from the sessions ── -->
+    <section id="voices">
+      <div class="section-label">// voices from the sessions</div>
+      <h2>VOICES</h2>
+      <p style="margin-bottom: 24px;">
         過去の合宿で交わされた言葉から。ゲスト講演と、その場で参加者が書き残したメモの抜粋です。
       </p>
       <div class="voices">
@@ -1863,8 +1942,26 @@
           <blockquote>名刺に書いてある仕事の顔ではなく、自分自身の顔を持ってほしい。</blockquote>
           <div class="voice-note">— ゲスト講演より</div>
         </div>
+        <div class="voice">
+          <blockquote>今あるアカデミアの仕組みは、歴史的には割と最近生まれたもの。今の大学だけが研究の形ではない。仕組み自体も、自分たちで自由に作ればいい。</blockquote>
+          <div class="voice-note">— ゲスト講演より</div>
+        </div>
+        <div class="voice">
+          <blockquote>技術のある市民が科学をハッキングする。</blockquote>
+          <div class="voice-note">— ゲスト講演より</div>
+        </div>
+        <div class="voice">
+          <blockquote>究極の意味でのシチズンサイエンスとは、市民が「被験者」になるのではなく、自発的に研究活動を行っていくこと。</blockquote>
+          <div class="voice-note">— 参加者メモより</div>
+        </div>
+        <div class="voice">
+          <blockquote>研究者としての独自性を確保していきながら、共有知を模索する。</blockquote>
+          <div class="voice-note">— 参加者メモより</div>
+        </div>
       </div>
     </section>
+
+    <div class="divider"><hr></div>
 
     <!-- ── Archives ── -->
     <section id="archives">
@@ -1896,17 +1993,22 @@
         <h3>Studemia 合宿 2024 春</h3>
         <p>「俯瞰知と好奇心」をテーマに上郷・森の家で開催。参加者 26 名。ゲストに原島 博氏・林 和弘氏を迎えた。</p>
         <a href="/2024/" class="archive-link" style="margin-top: 12px; display: inline-block;">アーカイブサイトを見る</a>
-          <ul class="archive-facts">
-            <li><span>DATE</span>2026.07.19 – 07.20</li>
-            <li><span>VENUE</span>上郷森の家（横浜市）</li>
-            <li><span>GUESTS</span>原島 博 / 林 和弘</li>
-          </ul>      
-        </div>
+      </div>
+    </section>
 
+    <div class="divider"><hr></div>
+
+    <!-- ── Next Year Teaser ── -->
+    <div class="next-teaser">
+      <div class="nt-eyebrow">NEXT...?</div>
+      <h3>STUDEMIA 2027</h3>
+      <p>次の冒険は、もう始まっています。</p>
+      <a class="nt-btn" href="/2027/">▶ PREVIEW <span class="nt-arrow">→</span></a>
+    </div>
 
     <!-- ── Footer ── -->
     <footer>
-      <p>© 2026 Studemia &nbsp;|&nbsp; <a href="mailto:info@studemia.org">info@studemia.org</a></p>
+      <p>© 2026 Studemia Wintercamp &nbsp;|&nbsp; <a href="mailto:info@studemia.org">info@studemia.org</a></p>
     </footer>
 
   </div>
