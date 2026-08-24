@@ -11,6 +11,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
 
+  <!-- augmented-ui (MIT license, propjockey/augmented-ui) — used sparingly, only where a cut-corner
+       silhouette should read as a distinct, heavier object against the soft glass cards elsewhere -->
+  <link rel="stylesheet" href="https://unpkg.com/augmented-ui@2/augmented-ui.min.css">
+
+  <!-- GSAP + ScrollTrigger (now fully free, incl. former club plugins) — drives every
+       scroll-triggered sequence on this page (section-enter, card reveals, voice log). -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+
   <style>
     /* ══════════════════════════════════════════
        Reset & Base
@@ -153,13 +162,117 @@
     }
 
     .section-label {
+      position: relative;
       font-family: 'Share Tech Mono', monospace;
       font-size: 11px;
       color: rgba(130, 150, 180, 0.5);
       letter-spacing: 0.2em;
       text-transform: uppercase;
       margin-bottom: 12px;
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 4px 18px;
+      padding-bottom: 10px;
     }
+    .section-label[data-sub] {
+      padding-bottom: 0;
+      opacity: 0.8;
+    }
+    /* the "line extends" step of the GSAP section-enter sequence — replaces a
+       static border-bottom so it can be scaled in from the left on scroll */
+    .sys-line {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      height: 1px;
+      background: rgba(130, 150, 180, 0.3);
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+    .section-label[data-sub] .sys-line { display: none; }
+
+    /* system readout: NODE id + status/source line, injected by JS from data-status/data-source */
+    .sys-id {
+      color: rgba(180, 210, 240, 0.85);
+      letter-spacing: 0.14em;
+      position: relative;
+      display: inline-block;
+    }
+    .sys-id .sys-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: rgba(140, 220, 190, 0.9);
+      box-shadow: 0 0 6px rgba(140, 220, 190, 0.8);
+      animation: sysPulse 2.6s ease-in-out infinite;
+    }
+    @keyframes sysPulse { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+
+    .sys-meta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: rgba(130, 150, 180, 0.55);
+      text-transform: none;
+    }
+    .sys-meta b {
+      color: rgba(150, 175, 200, 0.75);
+      font-weight: 400;
+    }
+
+    /* SAC-ish glitch: brief RGB-split flicker on hover, driven purely by CSS */
+    .sys-id.glitchy { cursor: default; }
+    .sys-id.glitchy::before,
+    .sys-id.glitchy::after {
+      content: attr(data-text);
+      position: absolute; left: 0; top: 0;
+      width: 100%; overflow: hidden;
+      opacity: 0;
+      background: transparent;
+    }
+    .sys-id.glitchy:hover::before,
+    .sys-id.glitchy:hover::after {
+      opacity: 0.8;
+      animation: glitchSplit 0.35s steps(2, jump-none) 1;
+    }
+    .sys-id.glitchy:hover::before { color: rgba(255, 90, 130, 0.85); clip-path: inset(0 0 55% 0); }
+    .sys-id.glitchy:hover::after  { color: rgba(90, 200, 255, 0.85); clip-path: inset(55% 0 0 0); }
+    @keyframes glitchSplit {
+      0%   { transform: translate(0, 0); }
+      25%  { transform: translate(-2px, 1px); }
+      50%  { transform: translate(2px, -1px); }
+      75%  { transform: translate(-1px, 0); }
+      100% { transform: translate(0, 0); }
+    }
+
+    /* blinking terminal cursor, used sparingly as a "live" marker */
+    .cursor-blink {
+      display: inline-block;
+      width: 0.55em;
+      background: rgba(150, 220, 190, 0.85);
+      margin-left: 2px;
+      animation: cursorBlink 1s steps(1) infinite;
+    }
+    @keyframes cursorBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sys-id .sys-dot, .cursor-blink, .sys-id.glitchy::before, .sys-id.glitchy::after {
+        animation: none !important;
+      }
+    }
+
+    /* corner badge for the Motion.dev hover micro-interaction on .pillar / .influence */
+    .corner-badge {
+      position: absolute; top: 10px; right: 10px;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+      font-family: 'Share Tech Mono', monospace; font-size: 9px;
+      letter-spacing: 0.1em; color: rgba(150, 220, 190, 0.85);
+      opacity: 0; pointer-events: none;
+    }
+    .corner-badge .cb-status { color: rgba(130, 150, 180, 0.6); }
+    .pillar, .influence { position: relative; }
 
     h2 {
       font-family: 'Orbitron', sans-serif;
@@ -391,11 +504,18 @@
       border: 1px solid rgba(130, 150, 180, 0.08);
       border-radius: 10px;
       transition: border-color 0.3s, background 0.3s;
+      /* cut-corner silhouette (augmented-ui) instead of the rounded glass everywhere else —
+         a reference card should read as a distinct physical object, not another glass panel */
+      --aug-border-bg: rgba(130, 180, 220, 0.35);
+      --aug-border-all: 1px;
+      --aug-inlay-bg: rgba(130, 180, 220, 0.03);
+      --aug-inlay-all: 3px;
     }
 
     .influence:hover {
       border-color: rgba(130, 180, 220, 0.22);
       background: rgba(20, 22, 30, 0.55);
+      --aug-border-bg: rgba(130, 180, 220, 0.55);
     }
 
     .influence .influence-tag {
@@ -430,6 +550,23 @@
       font-size: 13px;
       line-height: 1.8;
       color: rgba(200, 200, 210, 0.7);
+    }
+
+    /* ── News ticker: deliberately the lightest element on the page — a single
+         line, no card, no heading — so it reads as quiet against the heavier
+         glass-card sections around it (visual "light and shade") ── */
+    .news-ticker {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12.5px;
+      color: rgba(130, 150, 180, 0.55);
+      letter-spacing: 0.03em;
+    }
+    .news-dot {
+      width: 6px; height: 6px; border-radius: 50%; flex: none;
+      background: rgba(150, 220, 190, 0.85);
+      box-shadow: 0 0 6px rgba(150, 220, 190, 0.7);
+      animation: sysPulse 2.4s ease-in-out infinite;
     }
 
     /* ── Quote ── */
@@ -1064,36 +1201,57 @@
       color: rgba(180, 185, 200, 0.55);
     }
 
-    /* ── Session Voices (quotes) ── */
+    /* ── Session Voices: a streaming log, laid out as a grid so 17 entries
+         don't turn into one very long single column ── */
     .voices {
       margin-top: 20px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px 18px;
+      align-items: start;
     }
 
-    .voice {
-      position: relative;
-      padding: 20px 20px 18px;
-      background: rgba(15, 15, 20, 0.35);
-      border: 1px solid rgba(130, 150, 180, 0.06);
-      border-left: 2px solid rgba(180, 210, 170, 0.28);
-      border-radius: 8px;
+    /* two-tier card: tier1 is a small tab that sits ON TOP of tier2, like a
+       folder tab — unmistakably two stacked objects, not one box with an
+       internal divider. GSAP controls the reveal timing; these rules just
+       set the resting/paired shape. */
+    .voice { position: relative; }
+
+    .voice-tier1 {
+      position: relative; z-index: 2;
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 6px 12px;
+      background: rgba(130, 180, 220, 0.16);
+      border: 1px solid rgba(130, 180, 220, 0.4);
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      transform: translateY(1px);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
     }
+    .voice-tier2 {
+      position: relative; z-index: 1;
+      padding: 16px 16px 14px;
+      background: rgba(15, 15, 20, 0.5);
+      border: 1px solid rgba(130, 150, 180, 0.16);
+      border-radius: 0 6px 6px 6px;
+    }
+    .log-id { color: rgba(200, 225, 250, 0.9); }
+    .log-source { color: rgba(150, 175, 200, 0.6); }
 
     .voice blockquote {
-      margin: 0;
+      margin: 0 0 8px;
       font-size: 14px;
       line-height: 1.85;
       color: rgba(205, 210, 220, 0.82);
     }
-
-    .voice .voice-note {
-      margin-top: 10px;
+    .log-trace {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.08em;
+      font-size: 10px;
+      letter-spacing: 0.14em;
       color: rgba(130, 150, 180, 0.45);
+      text-align: right;
     }
 
     /* ── Archive Feature Card (with photo) ── */
@@ -1449,7 +1607,7 @@
     <!-- ── Hero ── -->
     <section class="hero" id="top">
       <img src="img/white_logo.png" alt="Studemia" class="hero-logo">
-      <div class="hero-year">ACADEMIC UNCONFERENCE</div>
+      <div class="hero-year">ACADEMIC UNCONFERENCE<span class="cursor-blink">&nbsp;</span></div>
       <h1 class="hero-title">STUDEMIA<br>WINTERCAMP 2026</h1>
       <p class="hero-tagline">
         専門の異なる仲間と問いを持ち寄り、<br>
@@ -1476,7 +1634,7 @@
 
     <!-- ── Concept ── -->
     <section id="concept">
-      <div class="section-label">// concept</div>
+      <div class="section-label" data-status="ACTIVE" data-source="STUDEMIA NETWORK">// concept</div>
       <h2>CONCEPT</h2>
       <div class="glass-card">
         <p>
@@ -1510,7 +1668,7 @@
 
     <!-- ── Why Studemia ── -->
     <section id="values">
-      <div class="section-label">// why studemia</div>
+      <div class="section-label" data-status="ACTIVE" data-source="MANIFESTO">// why studemia</div>
       <h2>WHY STUDEMIA</h2>
 
       <div class="glass-card">
@@ -1546,25 +1704,25 @@
 
     <!-- ── Influences ── -->
     <section id="influences">
-      <div class="section-label">// influences</div>
+      <div class="section-label" data-status="LINKED" data-source="REFERENCE LIBRARY">// influences</div>
       <h2>INFLUENCES</h2>
       <p style="margin-bottom: 24px;">
         Studemia が場のかたちを考えるうえで参照している、先人たちの仕事です。
       </p>
       <div class="influences-grid">
-        <div class="influence">
+        <div class="influence" data-augmented-ui="tl-clip br-clip both">
           <div class="influence-tag">BOOK</div>
           <h3>思考の整理学</h3>
           <p class="influence-author">外山 滋比古</p>
           <p>知識を寝かせる、忘れる、混ぜる。整理ではなく〈整流〉としての思考について。</p>
         </div>
-        <div class="influence">
+        <div class="influence" data-augmented-ui="tl-clip br-clip both">
           <div class="influence-tag">COLLECTIVE</div>
           <h3>物理の散歩道</h3>
           <p class="influence-author">ロゲルギスト (1950s–)</p>
           <p>日常の現象を持ち寄り、雑談のなかで物理を語り合ったエッセイ的集団。</p>
         </div>
-        <div class="influence">
+        <div class="influence" data-augmented-ui="tl-clip br-clip both">
           <div class="influence-tag">SOCIETY</div>
           <h3>ルナー・ソサエティ</h3>
           <p class="influence-author">Birmingham, 18th century</p>
@@ -1576,21 +1734,18 @@
     <div class="divider"><hr></div>
 
     <!-- ── News ── -->
-    <section id="news">
-      <div class="section-label">// news</div>
-      <h2>NEWS</h2>
-      <div class="glass-card">
-        <p style="color: rgba(130,150,180,0.5); font-family: 'Share Tech Mono', monospace; font-size: 13px;">
-          2026.08.22 — サイト公開。詳細は順次更新します。
-        </p>
-      </div>
+    <section id="news" style="padding-top: 60px; padding-bottom: 20px;">
+      <div class="section-label" data-status="LIVE" data-source="BULLETIN">// news</div>
+      <p class="news-ticker">
+        <span class="news-dot"></span>2026.08.22 — サイト公開。詳細は順次更新します。
+      </p>
     </section>
 
     <div class="divider"><hr></div>
 
     <!-- ── Event Details ── -->
     <section id="details">
-      <div class="section-label">// event details</div>
+      <div class="section-label" data-status="CONFIRMED" data-source="EVENT RECORD">// event details</div>
       <h2>開催概要</h2>
       <div class="details-list">
         <div class="detail-row">
@@ -1616,9 +1771,9 @@
 
     <!-- ── Guest Speakers ── -->
     <section id="speakers">
-      <div class="section-label">// guest speakers</div>
+      <div class="section-label" data-status="PENDING" data-source="SPEAKER REGISTRY">// guest speakers</div>
       <h2>GUEST SPEAKERS</h2>
-      <div class="glass-card" style="text-align: center; padding: 48px 32px;">
+      <div class="glass-card" data-augmented-ui="tl-clip tr-clip br-clip bl-clip both" style="text-align: center; padding: 48px 32px; --aug-border-bg: rgba(255,120,140,.4); --aug-border-all: 1px; --aug-inlay-bg: rgba(255,90,120,.05); --aug-inlay-all: 4px;">
         <span class="tba-badge">SPEAKERS — TBA</span>
         <p style="margin-top: 16px; font-size: 14px; color: rgba(180,185,200,0.5);">
           ゲストスピーカーは決定次第お知らせします
@@ -1630,7 +1785,7 @@
 
     <!-- ── Schedule ── -->
     <section id="schedule">
-      <div class="section-label">// schedule</div>
+      <div class="section-label" data-status="CONFIRMED" data-source="TIMELINE">// schedule</div>
       <h2>SCHEDULE</h2>
       <div class="schedule-grid">
 
@@ -1697,7 +1852,7 @@
 
     <!-- ── Venue ── -->
     <section id="venue" class="venue-section">
-      <div class="section-label">// venue</div>
+      <div class="section-label" data-status="CONFIRMED" data-source="LOCATION DATA">// venue</div>
       <h2>会場情報</h2>
       <div class="glass-card" style="padding: 40px 32px;">
         <div style="text-align: center;">
@@ -1724,7 +1879,7 @@
 
     <!-- ── Organising Team ── -->
     <section id="team">
-      <div class="section-label">// organising team</div>
+      <div class="section-label" data-status="FORMED" data-source="PARTY ROSTER">// organising team</div>
       <h2>ORGANISING TEAM</h2>
       <div class="team-grid">
 
@@ -1771,7 +1926,7 @@
 
       <!-- ── Volunteer Members ── -->
       <div style="margin-top: 56px;">
-        <div class="section-label">// volunteer members</div>
+        <div class="section-label" data-sub="1" data-status="RECRUITING">// volunteer members</div>
         <h2 style="font-size: clamp(18px, 2.6vw, 26px); margin-bottom: 20px;">VOLUNTEER MEMBERS</h2>
 
         <div class="team-grid">
@@ -1791,7 +1946,7 @@
 
     <!-- ── Special Thanks ── -->
     <section id="thanks">
-      <div class="section-label">// special thanks</div>
+      <div class="section-label" data-status="LOGGED" data-source="CONTRIBUTOR LIST">// special thanks</div>
       <h2>SPECIAL THANKS</h2>
       <div class="glass-card">
         <ul style="list-style: none; padding: 0;">
@@ -1807,7 +1962,7 @@
     <div class="divider"><hr></div>
     <!-- ── Registration ── -->
     <section id="register">
-      <div class="section-label">// registration</div>
+      <div class="section-label" data-status="OPEN" data-source="ENTRY FORM">// registration</div>
       <h2>参加登録</h2>
       <div class="glass-card">
         <p>Studemia 2026 の参加登録を受け付けています。以下のフォームからお申し込みください。</p>
@@ -1821,7 +1976,7 @@
 
     <!-- ── Sponsorship ── -->
     <section id="sponsor">
-      <div class="section-label">// sponsorship</div>
+      <div class="section-label" data-status="OPEN" data-source="GUILD SUPPORT">// sponsorship</div>
       <h2>SPONSORSHIP</h2>
       <p>
         Studemia は学生・大学院生が運営する非営利の合宿型勉強会です。
@@ -1904,7 +2059,7 @@
 
     <!-- ── Voices from the sessions ── -->
     <section id="voices">
-      <div class="section-label">// voices from the sessions</div>
+      <div class="section-label" data-status="STREAMING" data-source="SESSION ARCHIVE">// voices from the sessions</div>
       <h2>VOICES</h2>
       <p style="margin-bottom: 24px;">
         過去の合宿で交わされた言葉から。ゲスト講演と、その場で参加者が書き残したメモの抜粋です。
@@ -1985,7 +2140,7 @@
 
     <!-- ── Archives ── -->
     <section id="archives">
-      <div class="section-label">// archives</div>
+      <div class="section-label" data-status="INDEXED" data-source="PAST RUNS">// archives</div>
       <h2>ARCHIVES</h2>
       <p style="margin-bottom: 28px;">
         Studemia はこれまで複数回の合宿を重ねてきました。各回のテーマと記録は以下からご覧いただけます。
@@ -2037,6 +2192,247 @@
        Quantum +/− Background Animation
        ═══════════════════════════════════════════════════ -->
   <script>
+  /* ── shared: scramble a text node into its final value ("decrypting" feel) ──
+       targets must hold plain text only — never call this on an element with
+       child elements, it will clobber them via textContent. ── */
+  function scrambleReveal(el, onDone) {
+    if (!el) return;
+    var final = el.textContent;
+    var glyphs = '01#%&*<>/\\░▒▓';
+    var frame = 0;
+    var maxFrames = 10;
+    var iv = setInterval(function () {
+      frame++;
+      if (frame >= maxFrames) {
+        el.textContent = final;
+        clearInterval(iv);
+        if (onDone) onDone();
+        return;
+      }
+      var out = '';
+      for (var i = 0; i < final.length; i++) {
+        var ch = final[i];
+        if (ch === ' ' || ch === ':' || ch === '[' || ch === ']') { out += ch; continue; }
+        out += (Math.random() < frame / maxFrames) ? ch : glyphs[Math.floor(Math.random() * glyphs.length)];
+      }
+      el.textContent = out;
+    }, 35);
+  }
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasGSAP = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+  if (hasGSAP) gsap.registerPlugin(ScrollTrigger);
+
+  /* ── section-label -> system readout: "NODE 0N / LABEL  ·  STATUS ...  SOURCE ..." ──
+       text lives in .sys-id-text (plain text node) so scrambleReveal can safely
+       rewrite it without touching the dot / line siblings. ── */
+  (function () {
+   try {
+    var labels = document.querySelectorAll('.section-label');
+    var nodeIndex = 0;
+    labels.forEach(function (label) {
+      var raw = label.textContent.replace(/^\/\/\s*/, '').trim();
+      var status = label.getAttribute('data-status');
+      var source = label.getAttribute('data-source');
+      var isSub = label.hasAttribute('data-sub');
+      var idText = isSub
+        ? raw.toUpperCase()
+        : 'NODE ' + String(++nodeIndex).padStart(2, '0') + ' / ' + raw.toUpperCase();
+
+      label.textContent = '';
+
+      var idSpan = document.createElement('span');
+      idSpan.className = 'sys-id glitchy';
+      idSpan.setAttribute('data-text', idText);
+      if (!isSub) {
+        var dot = document.createElement('span');
+        dot.className = 'sys-dot';
+        idSpan.appendChild(dot);
+      }
+      var idText_ = document.createElement('span');
+      idText_.className = 'sys-id-text';
+      idText_.textContent = idText;
+      idSpan.appendChild(idText_);
+      label.appendChild(idSpan);
+
+      if (status || source) {
+        var meta = document.createElement('span');
+        meta.className = 'sys-meta';
+        var parts = [];
+        if (status) parts.push('STATUS <b>' + status + '</b>');
+        if (source) parts.push('SOURCE <b>' + source + '</b>');
+        meta.innerHTML = parts.join(' &middot; ');
+        label.appendChild(meta);
+      }
+
+      if (!isSub) {
+        var line = document.createElement('span');
+        line.className = 'sys-line';
+        label.appendChild(line);
+      }
+    });
+   } catch (err) { /* leave plain "// label" text as a harmless fallback */ }
+  })();
+
+  /* ── voices -> two-tier session log card: tier1 (id/source header, always
+       lands first) and tier2 (quote + trace, a visually separate body panel
+       underneath it) — a real two-stage object, not two classes on one div ── */
+  (function () {
+   try {
+    var voices = document.querySelectorAll('#voices .voice');
+    if (!voices.length) return;
+    var sourceMap = {
+      'ゲスト講演より': 'SESSION',
+      '参加者メモより': 'PARTICIPANT.NOTE',
+      '質疑応答より': 'QA.LOG'
+    };
+    voices.forEach(function (v, i) {
+      var note = v.querySelector('.voice-note');
+      var quote = v.querySelector('blockquote');
+      var noteText = note ? note.textContent.replace(/^—\s*/, '').trim() : '';
+      var source = sourceMap[noteText] || 'SESSION';
+
+      var tier1 = document.createElement('div');
+      tier1.className = 'voice-tier1';
+      var idSpan = document.createElement('span');
+      idSpan.className = 'log-id';
+      idSpan.textContent = '[LOG: ' + (301 + i) + ']';
+      var srcSpan = document.createElement('span');
+      srcSpan.className = 'log-source';
+      srcSpan.textContent = 'SOURCE : ' + source;
+      tier1.appendChild(idSpan);
+      tier1.appendChild(srcSpan);
+
+      var tier2 = document.createElement('div');
+      tier2.className = 'voice-tier2';
+      if (quote) tier2.appendChild(quote);
+      var trace = document.createElement('div');
+      trace.className = 'log-trace';
+      trace.textContent = 'TRACE COMPLETE';
+      tier2.appendChild(trace);
+
+      v.textContent = '';
+      v.appendChild(tier1);
+      v.appendChild(tier2);
+    });
+   } catch (err) { /* leave whatever voice markup already exists — still readable */ }
+  })();
+
+  /* ── GSAP section-enter sequence:
+       line extends -> ID decrypts in -> meta fades, per section header.
+       Panels wipe open (clip-path) with their OWN individual ScrollTrigger —
+       not one trigger for the whole section. A tall section (VOICES has 17
+       cards) would otherwise fire all its panels together the moment the
+       section's *top* crosses the trigger line, long before you'd scrolled
+       down far enough to actually see most of them — they'd already be fully
+       revealed and look like nothing was animating at all.
+       Falls back to a plain "just show everything" pass if GSAP failed to load
+       (CDN blocked, etc.) or the visitor asked for reduced motion. ── */
+  (function () {
+    var PANEL_SELECTOR =
+      '.glass-card, .pillar, .influence, .team-card, .sponsor-plan, ' +
+      '.archive-feature, .archive-item, .day-column, .quote';
+
+    function showEverything() {
+      document.querySelectorAll('.sys-line').forEach(function (l) { l.style.transform = 'scaleX(1)'; });
+      document.querySelectorAll('.sys-meta').forEach(function (m) { m.style.opacity = '1'; });
+      document.querySelectorAll(PANEL_SELECTOR + ', .voice-tier1, .voice-tier2').forEach(function (el) {
+        el.style.clipPath = 'none'; el.style.opacity = '1';
+      });
+    }
+
+    if (!hasGSAP || reduceMotion) { showEverything(); return; }
+
+    try {
+      document.querySelectorAll('section[id]').forEach(function (section) {
+        var label = section.querySelector('.section-label');
+        var line = label ? label.querySelector('.sys-line') : null;
+        var idText = label ? label.querySelector('.sys-id-text') : null;
+        var meta = label ? label.querySelector('.sys-meta') : null;
+
+        var headTl = gsap.timeline({
+          scrollTrigger: { trigger: section, start: 'top 80%', once: true }
+        });
+        if (line) headTl.fromTo(line, { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power2.out' });
+        if (idText) headTl.call(function () { scrambleReveal(idText); });
+        if (meta) headTl.fromTo(meta, { opacity: 0 }, { opacity: 1, duration: 0.35 }, '-=0.1');
+
+        section.querySelectorAll(PANEL_SELECTOR).forEach(function (panel, i) {
+          gsap.fromTo(panel,
+            { clipPath: 'inset(0 100% 0 0)', opacity: 0.5 },
+            {
+              clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 0.55, ease: 'power2.out',
+              scrollTrigger: { trigger: panel, start: 'top 88%', once: true }
+            }
+          );
+        });
+      });
+
+      /* voice cards: tier1 (header) lands first, tier2 (quote body) wipes in
+         right after — each card triggers off its own position, not the section's */
+      document.querySelectorAll('.voice').forEach(function (v) {
+        var t1 = v.querySelector('.voice-tier1');
+        var t2 = v.querySelector('.voice-tier2');
+        if (!t1 && !t2) return;
+        var vtl = gsap.timeline({
+          scrollTrigger: { trigger: v, start: 'top 90%', once: true }
+        });
+        if (t1) vtl.fromTo(t1, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });
+        if (t2) {
+          vtl.fromTo(t2,
+            { clipPath: 'inset(0 100% 0 0)', opacity: 0.6 },
+            { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 0.45, ease: 'power2.out' },
+            '-=0.05'
+          );
+        }
+      });
+
+      window.addEventListener('load', function () { ScrollTrigger.refresh(); });
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
+      }
+    } catch (err) {
+      /* any GSAP/ScrollTrigger runtime error must never leave content invisible */
+      showEverything();
+    }
+  })();
+
+  /* ── Motion.dev: card hover micro-interaction — a small corner readout
+       ("01 / ACTIVE") slides in on .pillar / .influence hover. GSAP owns
+       scroll sequencing; Motion owns this kind of small gesture-driven UI bit. ── */
+  (function () {
+   try {
+    if (reduceMotion) return;
+    var cards = document.querySelectorAll('.pillar, .influence');
+    if (!cards.length) return;
+    cards.forEach(function (card, i) {
+      var badge = document.createElement('div');
+      badge.className = 'corner-badge';
+      badge.innerHTML =
+        '<span>' + String(i + 1).padStart(2, '0') + '</span>' +
+        '<span class="cb-status">ACTIVE</span>';
+      card.appendChild(badge);
+    });
+
+    import('https://cdn.jsdelivr.net/npm/motion@11/+esm').then(function (Motion) {
+      var hover = Motion.hover, animate = Motion.animate;
+      cards.forEach(function (card) {
+        var badge = card.querySelector('.corner-badge');
+        hover(card, function () {
+          var stop = animate(badge, { opacity: 1, x: [8, 0] }, { duration: 0.25, easing: 'ease-out' });
+          return function () {
+            animate(badge, { opacity: 0, x: 8 }, { duration: 0.2, easing: 'ease-in' });
+            if (stop && stop.stop) stop.stop();
+          };
+        });
+      });
+    }).catch(function () {
+      /* Motion failed to load (CDN blocked, older browser) — hover badges just
+         stay hidden; nothing else on the page depends on this module. */
+    });
+   } catch (err) { /* corner badges are decorative only — safe to skip entirely */ }
+  })();
+
   const navToggle = document.querySelector('.nav-toggle');
   const primaryNavigation = document.querySelector('.nav-links');
 

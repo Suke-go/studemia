@@ -22,26 +22,35 @@
      ══════════════════════════════════════════ */
   *, *::before, *::after { box-sizing: border-box; }
 
+  /* UI = navy / white / gold (Dragon-Quest-style window chrome).
+     World (hero field only) = green / brown, kept in a separate token set below
+     so the palette never leaks green back into panels, buttons, or text. */
   body[data-skin="pixel"] {
     --font-head: 'DotGothic16', 'Press Start 2P', sans-serif;
     --font-body: 'Zen Kaku Gothic New', 'DotGothic16', sans-serif;
-    --page-bg: #1a3a22;
-    --panel: #1f4529;
-    --panel-2: #285631;
-    --panel-3: #163420;
-    --line: #4a8c56;
-    --line-2: #7fce7f;
-    --edge: #7fce7f;
-    --edge-dim: #4a8c56;
-    --accent: #8CFA6B;
-    --accent-2: #5be89a;
-    --text: #f4fff0;
-    --text-dim: #bfe8bf;
-    --xp: #d8ff8c;
+    --page-bg: #0d1230;
+    --panel: #172554;
+    --panel-2: #1e2f66;
+    --panel-3: #0d1230;
+    --line: #f3f4e8;
+    --line-2: #ffffff;
+    --edge: #f3f4e8;
+    --edge-dim: rgba(243, 244, 232, .35);
+    --accent: #f6d75a;
+    --accent-2: #8ecbe6;
+    --text: #fffdf0;
+    --text-dim: rgba(255, 253, 240, .68);
+    --xp: #f6d75a;
+
+    /* world tokens — used only by the hero field tilemap and small world-flavored accents */
+    --grass: #6cae3e;
+    --grass-dark: #477d2b;
+    --dirt: #c99b55;
+    --dirt-dark: #8c6437;
   }
   [data-skin="pixel"] {
-    --px: #12281a;
-    --px-l: #6fd66f;
+    --px: #080b18;
+    --px-l: #f3f4e8;
   }
 
   html { scroll-behavior: smooth; }
@@ -85,7 +94,7 @@
   /* ── Nav ── */
   nav {
     position: sticky; top: 0; z-index: 50;
-    background: rgba(20, 50, 28, 0.92);
+    background: rgba(13, 18, 48, 0.92);
     box-shadow: inset 0 0 0 4px var(--px), inset 0 0 0 7px var(--px-l);
     backdrop-filter: blur(6px);
   }
@@ -113,11 +122,58 @@
     box-shadow: inset 0 0 0 3px var(--px);
   }
 
-  /* ── Hero ── */
+  /* ── Hero: a real field screen, not a background photo ── */
   .hero {
-    padding: 120px 24px 80px;
+    position: relative;
+    min-height: 640px;
+    padding: 0 20px 40px;
+    display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero-field {
+    position: absolute; inset: 0; z-index: -1;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    image-rendering: pixelated;
+  }
+  .field-grid {
+    position: absolute; inset: 0;
+    display: grid;
+  }
+  .field-cell {
+    background-repeat: no-repeat; background-size: 100% 100%;
+    image-rendering: pixelated;
+  }
+  .field-cell.g { background-image: url(img/tiles/grass.png); }
+  .field-cell.p { background-image: url(img/tiles/dirt.png); }
+  .field-sprite {
+    position: absolute; image-rendering: pixelated;
+    transform: translate(-50%, -100%);
+    filter: drop-shadow(0 3px 2px rgba(0,0,0,.4));
+  }
+  .field-shadow {
+    position: absolute; image-rendering: pixelated;
+    transform: translate(-50%, -46%);
+    opacity: .55;
+  }
+  .hero-sprite { animation: heroBob 1.1s steps(2) infinite; }
+  @keyframes heroBob { 50% { transform: translate(-50%, -104%); } }
+  .hero::after {
+    content: '';
+    position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, rgba(8,11,24,.15) 0%, rgba(8,11,24,.04) 40%, rgba(8,11,24,.55) 100%);
+  }
+
+  /* ── DQ-style window: the actual UI, floated over the field, never blended into it ── */
+  .hero-window {
+    position: relative; z-index: 2;
+    width: min(520px, 100%);
+    margin-top: 40px;
+    padding: 22px 26px 24px;
     text-align: center;
-    display: flex; flex-direction: column; align-items: center; gap: 20px;
+    background: var(--panel);
+    box-shadow: inset 0 0 0 4px var(--px), inset 0 0 0 8px var(--px-l), inset 0 0 0 12px var(--px), 0 14px 0 rgba(0,0,0,.35);
   }
   .draft-badge {
     font-family: 'Press Start 2P', cursive; font-size: 9px;
@@ -126,27 +182,39 @@
     padding: 6px 14px;
     clip-path: var(--slot-shape);
     animation: blink 1.6s steps(2) infinite;
+    margin-bottom: 14px; display: inline-block;
   }
   @keyframes blink { 50% { opacity: .45; } }
-  .hero img.hero-logo { height: 44px; width: auto; image-rendering: pixelated; opacity: .9; }
+  .hero img.hero-logo { height: 38px; width: auto; image-rendering: pixelated; opacity: .9; margin-bottom: 6px; }
   .hero-title {
     font-family: var(--font-head); font-weight: 700;
-    font-size: clamp(30px, 8vw, 56px);
+    font-size: clamp(24px, 6vw, 38px);
     letter-spacing: .03em;
     color: var(--text);
-    text-shadow: 4px 4px 0 rgba(0,0,0,.55), 0 0 24px color-mix(in srgb, var(--accent-2) 35%, transparent);
+    text-shadow: 3px 3px 0 rgba(0,0,0,.5);
     line-height: 1.3;
+    margin-bottom: 10px;
   }
-  .hero-title .yr { color: var(--xp); }
+  .hero-title .yr { color: var(--accent); }
+  .dq-prompt {
+    font-family: var(--font-head); font-size: 14px; color: var(--text);
+    margin-bottom: 4px;
+  }
+  .dq-prompt .cursor-blink {
+    display: inline-block; width: .6em; margin-left: 2px;
+    background: var(--accent); animation: cursorBlink 1s steps(1) infinite;
+  }
+  @keyframes cursorBlink { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
   .hero-tagline {
-    max-width: 560px; font-size: 15px; color: var(--text-dim); line-height: 2;
+    font-size: 13px; color: var(--text-dim); line-height: 1.9;
+    margin-bottom: 16px;
   }
-  .hero-meta { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .hero-meta { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 18px; }
   .hero-meta .m-tag {
     display: flex; flex-direction: column; gap: 4px; align-items: center;
-    padding: 10px 22px;
-    background: var(--panel);
-    box-shadow: inset 0 0 0 3px var(--px), inset 0 0 0 6px var(--px-l);
+    padding: 8px 18px;
+    background: var(--panel-2);
+    box-shadow: inset 0 0 0 2px var(--px);
   }
   .hero-meta .m-tag .m-k {
     font-family: 'Press Start 2P', cursive; font-size: 8px; color: var(--accent-2); letter-spacing: .1em;
@@ -154,12 +222,27 @@
   .hero-meta .m-tag .m-v {
     font-family: var(--font-head); font-size: 14px; color: var(--text);
   }
-  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 6px; }
-  .hero-actions .btn { text-decoration: none; min-width: 200px; }
-  .btn[aria-disabled="true"] {
-    filter: grayscale(.7) brightness(.6); cursor: not-allowed; pointer-events: none;
+
+  /* command-select menu, not pill buttons */
+  .menu-list { display: flex; flex-direction: column; text-align: left; }
+  .menu-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px;
+    font-family: var(--font-head); font-size: 15px; color: var(--text);
+    text-decoration: none;
+    transition: background .12s;
   }
+  .menu-item:hover { background: rgba(255,255,255,.06); }
+  .menu-item .cursor {
+    flex: none; width: 14px;
+    font-family: 'Press Start 2P', cursive; font-size: 10px; color: var(--accent);
+    opacity: 0;
+  }
+  .menu-item.primary .cursor { opacity: 1; animation: cursorBlink .8s steps(2) infinite; }
+  .menu-item[aria-disabled="true"] { opacity: .4; pointer-events: none; }
+
   .hero-scroll {
+    margin-top: 14px;
     font-family: 'Press Start 2P', cursive; font-size: 9px; color: var(--text-dim);
     animation: bob 1.4s ease-in-out infinite;
   }
@@ -168,6 +251,8 @@
   /* ── Dialogue (reused for concept intro) ── */
   .dialogue { width: 100%; margin-bottom: 24px; cursor: default; }
   .dialogue .dl-port img { width: 42px; height: 42px; image-rendering: pixelated; }
+  [data-skin="pixel"] .dl-text { font-size: 16px; line-height: 1.8; font-family: var(--font-body); font-weight: 600; }
+  [data-skin="pixel"] .dl-name { font-size: 10px; }
 
   /* ── Generic panel wrapper ── */
   .panel-block {
@@ -190,13 +275,47 @@
   .pillar h3 { font-family: var(--font-head); font-size: 15px; margin-bottom: 10px; color: var(--text); }
   .pillar p { font-size: 13.5px; color: var(--text-dim); line-height: 1.85; }
 
-  /* ── Quest list (details / schedule) ── */
-  .quests { width: 100%; max-width: none; }
+  /* ── Quest list (details / schedule) — a chalkboard in a wooden frame, mounted on the wall ── */
+  .quests {
+    width: 100%; max-width: none;
+    position: relative;
+    padding: 28px 24px 20px !important;
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(255,255,255,.05), rgba(255,255,255,0) 40%),
+      radial-gradient(ellipse at 80% 90%, rgba(255,255,255,.04), rgba(255,255,255,0) 45%),
+      #12151d;
+    box-shadow:
+      inset 0 0 0 10px var(--dirt-dark),
+      inset 0 0 0 13px #4a3016,
+      inset 0 0 0 16px rgba(0,0,0,.3),
+      0 14px 0 rgba(0,0,0,.35);
+  }
+  .quests::before, .quests::after {
+    content: ''; position: absolute; top: -8px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #d8d8d0, #8a8a80 60%, #4a4a44 100%);
+    box-shadow: 0 2px 0 rgba(0,0,0,.4), 0 6px 5px rgba(0,0,0,.4);
+  }
+  .quests::before { left: 18px; }
+  .quests::after { right: 18px; }
+  [data-skin="pixel"] .quests .q-item {
+    border-bottom: 1px dashed rgba(255,253,240,.2);
+  }
+  [data-skin="pixel"] .quests .q-bullet {
+    background: transparent; box-shadow: none; border-radius: 50%;
+    border: 2px solid var(--accent); background-clip: padding-box;
+  }
+  [data-skin="pixel"] .quests .q-txt {
+    font-size: 16px; line-height: 1.6; font-family: 'DotGothic16', var(--font-body); font-weight: 700;
+    color: #f8fff5;
+    text-shadow: 0 0 1px rgba(255,253,240,.5), 1px 1px 0 rgba(0,0,0,.2);
+  }
   .q-item { cursor: default; }
-  .q-item .q-sub { display: block; font-size: 12px; color: var(--text-dim); margin-top: 3px; }
+  .q-item .q-sub { display: block; font-size: 13px; color: #b7bcc9; margin-top: 3px; }
   .q-status {
-    font-family: 'Press Start 2P', cursive; font-size: 8px; letter-spacing: .06em;
-    color: var(--text-dim); background: var(--panel-3); padding: 4px 8px;
+    font-family: 'Press Start 2P', cursive; font-size: 10px; letter-spacing: .06em;
+    color: var(--accent); background: transparent; padding: 6px 10px;
+    border: 2px dashed var(--accent);
   }
 
   /* ── TBA panel ── */
@@ -229,23 +348,70 @@
   .party-card .p-info .p-social a { color: var(--accent-2); font-size: 12px; text-decoration: none; }
   .party-note { font-size: 13px; color: var(--text-dim); }
 
-  /* ── Sponsor tiers ── */
-  .tier-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
-  .tier-card {
-    padding: 22px 20px; background: var(--panel-2);
-    box-shadow: inset 0 0 0 3px var(--px), inset 0 0 0 5px var(--r-color, var(--line));
+  /* ── Sponsorship: an item-get chest reveal instead of pricing cards ── */
+  .chest-reveal { text-align: center; }
+  .chest-icon {
+    width: 64px; image-rendering: pixelated;
+    margin-bottom: -16px; position: relative; z-index: 2;
+    filter: drop-shadow(0 6px 4px rgba(0,0,0,.4));
   }
-  .tier-card.gold { --r-color: var(--gold); }
-  .tier-card.silver { --r-color: #b9c0d4; }
-  .tier-card.bronze { --r-color: #b5772f; }
-  .tier-card h3 { font-family: var(--font-head); font-size: 16px; color: var(--r-color, var(--text)); margin-bottom: 6px; }
-  .tier-card .price { font-family: 'Press Start 2P', cursive; font-size: 11px; color: var(--text); margin-bottom: 10px; }
-  .tier-card .fit { font-size: 12.5px; color: var(--text-dim); margin-bottom: 14px; line-height: 1.7; }
-  .tier-card ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-  .tier-card li { font-size: 13px; color: var(--text-dim); padding-left: 16px; position: relative; }
-  .tier-card li::before { content: '»'; position: absolute; left: 0; color: var(--r-color, var(--accent-2)); }
+  .chest-window {
+    position: relative; z-index: 1;
+    background: var(--panel);
+    box-shadow: inset 0 0 0 4px var(--px), inset 0 0 0 8px var(--px-l), inset 0 0 0 12px var(--px);
+    padding: 32px 20px 18px;
+    text-align: left;
+  }
+  .chest-title {
+    text-align: center; font-family: var(--font-head); font-size: 16px;
+    color: var(--accent); margin-bottom: 16px; letter-spacing: .04em;
+  }
+  .item-list { display: flex; flex-direction: column; }
+  .item-row { border-bottom: 1px dashed var(--edge-dim); }
+  .item-row:last-child { border-bottom: none; }
+  .item-row summary {
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    padding: 12px 6px; cursor: pointer; list-style: none;
+    font-family: var(--font-head); font-size: 15px; color: var(--text);
+  }
+  .item-row summary::-webkit-details-marker { display: none; }
+  .item-row summary::before {
+    content: '▶'; font-family: 'Press Start 2P', cursive; font-size: 9px; color: var(--accent);
+    margin-right: 2px; display: inline-block; transition: transform .15s;
+  }
+  .item-row[open] summary::before { transform: rotate(90deg); }
+  .item-row .item-name { flex: 1; }
+  .item-row.gold .item-name { color: #ffd75a; }
+  .item-row.silver .item-name { color: #cfd6e6; }
+  .item-row.bronze .item-name { color: #d99a55; }
+  .item-row .item-price { font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--text-dim); white-space: nowrap; }
+  .item-row .item-price .g { color: var(--accent); margin-left: 2px; }
+  .item-desc { padding: 0 6px 16px 28px; }
+  .item-desc .fit { font-size: 12.5px; color: var(--text-dim); margin-bottom: 10px; line-height: 1.7; }
+  .item-desc ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .item-desc li { font-size: 12.5px; color: var(--text-dim); padding-left: 14px; position: relative; }
+  .item-desc li::before { content: '»'; position: absolute; left: 0; color: var(--accent-2); }
+  .chest-cta {
+    margin-top: 18px; padding-top: 16px;
+    border-top: 1px solid var(--edge-dim);
+    text-align: center;
+  }
+  .chest-cta p {
+    font-size: 12.5px; color: var(--text-dim); margin-bottom: 12px; line-height: 1.8;
+  }
+  .chest-cta a {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace; font-size: 12px;
+    color: var(--accent); text-decoration: none;
+    letter-spacing: .06em;
+    padding: 9px 18px;
+    border: 1px solid var(--accent);
+    transition: background .15s, color .15s;
+  }
+  .chest-cta a:hover { background: var(--accent); color: #12142a; }
   .sponsor-note {
-    margin-top: 18px; font-family: 'Press Start 2P', cursive; font-size: 9px;
+    margin-top: 16px; text-align: center;
+    font-family: 'Press Start 2P', cursive; font-size: 9px;
     color: var(--text-dim); letter-spacing: .04em; line-height: 2;
   }
 
@@ -253,12 +419,31 @@
   .voices {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 14px;
+    gap: 22px 14px;
   }
+  /* speech bubble: rounded panel + a little pointed tail, and a bouncy pop-in
+     reveal on scroll instead of a static grid of cards */
   .voice {
+    position: relative;
     padding: 18px 18px 16px;
     background: var(--panel-2);
+    border-radius: 14px;
     box-shadow: inset 0 0 0 3px var(--px), inset 0 0 0 5px var(--accent-2);
+    opacity: 0;
+    transform: scale(.82) translateY(16px);
+    transition: opacity .3s ease, transform .5s cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .voice.revealed { opacity: 1; transform: scale(1) translateY(0); }
+  .voice::before, .voice::after {
+    content: ''; position: absolute; left: 26px; width: 0; height: 0; border-style: solid;
+  }
+  .voice::before {
+    bottom: -13px; border-width: 13px 11px 0 11px;
+    border-color: var(--accent-2) transparent transparent transparent;
+  }
+  .voice::after {
+    bottom: -10px; left: 28px; border-width: 10px 9px 0 9px;
+    border-color: var(--panel-2) transparent transparent transparent;
   }
   .voice blockquote {
     margin: 0; font-size: 13.5px; line-height: 1.85; color: var(--text-dim);
@@ -292,7 +477,7 @@
     .nav-links {
       position: absolute; top: 64px; left: 0; right: 0;
       flex-direction: column; gap: 0;
-      background: rgba(20,50,28,0.98);
+      background: rgba(13,18,48,0.98);
       box-shadow: inset 0 0 0 3px var(--px);
       max-height: 0; overflow: hidden; transition: max-height .2s ease;
     }
@@ -332,19 +517,44 @@
 
   <!-- ── Hero ── -->
   <section class="hero" id="top">
-    <span class="draft-badge">DRAFT — 準備中フォーマット</span>
-    <img src="img/white_logo.png" alt="Studemia" class="hero-logo">
-    <h1 class="hero-title">STUDEMIA<br><span class="yr">2027</span></h1>
-    <p class="hero-tagline">
-      専門の異なる仲間と問いを持ち寄り、先人の知恵にじっくり向き合うための、学際的な勉強会。
-    </p>
-    <div class="hero-meta">
-      <div class="m-tag"><span class="m-k">DATE</span><span class="m-v">2027 SUMMER</span></div>
-      <div class="m-tag"><span class="m-k">VENUE</span><span class="m-v">TBA</span></div>
+    <div class="hero-field" aria-hidden="true">
+      <div class="field-grid" id="field-grid"></div>
+
+      <img class="field-sprite" src="img/tiles/tree-big.png" alt="" style="left:16%; top:12%; width:60px;">
+      <img class="field-sprite" src="img/tiles/tree-med.png" alt="" style="left:84%; top:19%; width:44px;">
+      <img class="field-sprite" src="img/tiles/pond.png" alt="" style="left:80%; top:12%; width:40px;">
+      <img class="field-sprite" src="img/tiles/rock-big.png" alt="" style="left:61%; top:35%; width:30px;">
+      <img class="field-sprite" src="img/tiles/rock-small.png" alt="" style="left:25%; top:58%; width:26px;">
+      <img class="field-sprite" src="img/tiles/tree-small.png" alt="" style="left:11%; top:79%; width:34px;">
+
+      <img class="field-shadow" src="img/tiles/shadow.png" alt="" style="left:43%; top:19%; width:34px;">
+      <img class="field-sprite" src="img/tiles/chest-closed.png" alt="宝箱" style="left:39%; top:19%; width:36px;">
+
+      <img class="field-shadow" src="img/tiles/shadow.png" alt="" style="left:75%; top:42%; width:26px;">
+      <img class="field-sprite" src="img/tiles/monster-small.png" alt="敵キャラ" style="left:75%; top:42%; width:28px; filter: drop-shadow(0 0 5px rgba(255,60,60,.5));">
+
+      <img class="field-shadow" src="img/tiles/shadow.png" alt="" style="left:52%; top:50%; width:36px;">
+      <img class="field-sprite hero-sprite" id="hero-sprite" src="img/tiles/hero.png" alt="勇者" style="left:52%; top:50%; width:40px;">
+      <img class="field-sprite" src="img/tiles/sign-post.png" alt="" style="left:43%; top:50%; width:26px;">
     </div>
-    <div class="hero-actions">
-      <a href="#details" class="btn btn-primary">→ 開催概要を見る</a>
-      <a href="#" class="btn btn-neutral" aria-disabled="true" tabindex="-1">参加フォーム（準備中）</a>
+
+    <div class="hero-window">
+      <span class="draft-badge">DRAFT — 準備中フォーマット</span>
+      <img src="img/white_logo.png" alt="Studemia" class="hero-logo">
+      <h1 class="hero-title">STUDEMIA<br><span class="yr">2027</span></h1>
+      <p class="dq-prompt">ぼうけんを はじめますか？<span class="cursor-blink">&nbsp;</span></p>
+      <p class="hero-tagline">
+        専門の異なる仲間と問いを持ち寄り、先人の知恵にじっくり向き合うための、学際的な勉強会。
+      </p>
+      <div class="hero-meta">
+        <div class="m-tag"><span class="m-k">DATE</span><span class="m-v">2027 SUMMER</span></div>
+        <div class="m-tag"><span class="m-k">VENUE</span><span class="m-v">TBA</span></div>
+      </div>
+      <div class="menu-list">
+        <a href="#details" class="menu-item primary"><span class="cursor">▶</span>EVENT DETAILS</a>
+        <a href="#concept" class="menu-item"><span class="cursor"></span>ABOUT</a>
+        <a href="#" class="menu-item" aria-disabled="true" tabindex="-1"><span class="cursor"></span>参加フォーム（準備中）</a>
+      </div>
     </div>
     <div class="hero-scroll">▼ SCROLL</div>
   </section>
@@ -354,7 +564,7 @@
   <!-- ── Concept ── -->
   <section id="concept">
     <div class="section-label">// concept</div>
-    <h2 class="pixel-h">CONCEPT</h2>
+    <h2 class="pixel-h"><img src="img/tiles/tree-small.png" alt="" style="width:24px; vertical-align:-5px; image-rendering:pixelated; margin-right:8px;">CONCEPT</h2>
 
     <div class="dialogue">
       <div class="dl-port"><img src="img/white_logo.png" alt=""></div>
@@ -397,8 +607,10 @@
   <!-- ── Event Details (quest board) ── -->
   <section id="details">
     <div class="section-label">// quest board</div>
-    <h2 class="pixel-h">EVENT DETAILS</h2>
-    <section class="panel quests" style="padding:18px 20px 8px;">
+    <h2 class="pixel-h"><img src="img/tiles/rock-small.png" alt="" style="width:22px; vertical-align:-4px; image-rendering:pixelated; margin-right:8px;">EVENT DETAILS</h2>
+    <section class="panel quests">
+      <img src="img/tiles/torch-fire.png" alt="" style="position:absolute; top:-34px; left:6px; width:30px; image-rendering:pixelated; filter:drop-shadow(0 0 8px rgba(255,150,60,.6));">
+      <img src="img/tiles/torch-fire.png" alt="" style="position:absolute; top:-34px; right:6px; width:30px; image-rendering:pixelated; filter:drop-shadow(0 0 8px rgba(255,150,60,.6));">
       <div class="q-list">
         <div class="q-item">
           <span class="q-bullet"></span>
@@ -425,7 +637,10 @@
   <section id="speakers">
     <div class="section-label">// boss encounter</div>
     <h2 class="pixel-h">GUEST SPEAKERS</h2>
-    <div class="panel-block tba-panel">
+    <div class="panel-block tba-panel" style="position:relative;">
+      <img src="img/tiles/torch-fire.png" alt="" style="position:absolute; top:-16px; left:6px; width:30px; image-rendering:pixelated; filter:drop-shadow(0 0 8px rgba(255,150,60,.6));">
+      <img src="img/tiles/torch-fire.png" alt="" style="position:absolute; top:-16px; right:6px; width:30px; image-rendering:pixelated; filter:drop-shadow(0 0 8px rgba(255,150,60,.6));">
+      <img src="img/tiles/boss-silhouette.png" alt="???" style="width:96px; image-rendering:pixelated; margin-bottom:12px; filter:brightness(0.15) drop-shadow(0 0 14px rgba(255,40,40,.65)); animation:blink 2.4s steps(2) infinite;">
       <span class="tba-badge">??? — LOCKED</span>
       <p>ゲストスピーカーは決定次第お知らせします。</p>
     </div>
@@ -460,7 +675,7 @@
   <!-- ── Team (party) ── -->
   <section id="team">
     <div class="section-label">// party</div>
-    <h2 class="pixel-h">ORGANISING TEAM</h2>
+    <h2 class="pixel-h"><img src="img/tiles/hero.png" alt="" style="width:26px; vertical-align:-6px; image-rendering:pixelated; margin-right:8px;">ORGANISING TEAM</h2>
     <div class="party-grid">
       <div class="party-card">
         <div class="p-badge"><img src="img/shimizu.jpg" alt="清水 紘輔"></div>
@@ -480,7 +695,7 @@
   <!-- ── Sponsorship (guild support) ── -->
   <section id="sponsor">
     <div class="section-label">// guild support</div>
-    <h2 class="pixel-h">SPONSORSHIP</h2>
+    <h2 class="pixel-h"><img src="img/tiles/chest-closed.png" alt="" style="width:26px; vertical-align:-6px; image-rendering:pixelated; margin-right:8px;">SPONSORSHIP</h2>
     <div class="panel-block">
       <p>
         Studemia は学生・大学院生が運営する非営利の合宿型勉強会です。
@@ -489,36 +704,48 @@
       </p>
     </div>
 
-    <div class="tier-grid">
-      <div class="tier-card gold">
-        <h3>GOLD</h3>
-        <div class="price">一口 100,000円</div>
-        <div class="fit">企業として継続的に学際的人材育成を応援したい方向け</div>
-        <ul>
-          <li>公式サイト・印刷物・ZINE へのロゴ掲載（大）</li>
-          <li>会場バナー掲示</li>
-          <li>クロージングセッションでのご紹介</li>
-          <li>参加枠 1名</li>
-        </ul>
-      </div>
-      <div class="tier-card silver">
-        <h3>SILVER</h3>
-        <div class="price">一口 50,000円</div>
-        <div class="fit">研究室・スタートアップなど、複数名で参加・採用視点をお持ちの方向け</div>
-        <ul>
-          <li>公式サイト・印刷物へのロゴ掲載（中）</li>
-          <li>ZINE 内ロゴ掲載</li>
-          <li>参加枠 2名</li>
-        </ul>
-      </div>
-      <div class="tier-card bronze">
-        <h3>BRONZE</h3>
-        <div class="price">一口 20,000円</div>
-        <div class="fit">小規模団体・個人事業の方や、まずは応援から始めたい方向け</div>
-        <ul>
-          <li>公式サイト・ZINE へのロゴ掲載（小）</li>
-          <li>Special Thanks クレジット</li>
-        </ul>
+    <div class="chest-reveal">
+      <img class="chest-icon" src="img/tiles/chest-closed.png" alt="">
+      <div class="chest-window">
+        <p class="chest-title">ご支援プラン</p>
+        <div class="item-list">
+          <details class="item-row gold" open>
+            <summary><span class="item-name">GOLD</span><span class="item-price">100,000<span class="g">円</span></span></summary>
+            <div class="item-desc">
+              <p class="fit">企業として継続的に学際的人材育成を応援したい方向け</p>
+              <ul>
+                <li>公式サイト・印刷物・ZINE へのロゴ掲載（大）</li>
+                <li>会場バナー掲示</li>
+                <li>クロージングセッションでのご紹介</li>
+                <li>参加枠 1名</li>
+              </ul>
+            </div>
+          </details>
+          <details class="item-row silver">
+            <summary><span class="item-name">SILVER</span><span class="item-price">50,000<span class="g">円</span></span></summary>
+            <div class="item-desc">
+              <p class="fit">研究室・スタートアップなど、複数名で参加・採用視点をお持ちの方向け</p>
+              <ul>
+                <li>公式サイト・印刷物へのロゴ掲載（中）</li>
+                <li>ZINE 内ロゴ掲載</li>
+              </ul>
+            </div>
+          </details>
+          <details class="item-row bronze">
+            <summary><span class="item-name">BRONZE</span><span class="item-price">20,000<span class="g">円</span></span></summary>
+            <div class="item-desc">
+              <p class="fit">小規模団体・個人事業の方や、まずは応援から始めたい方向け</p>
+              <ul>
+                <li>公式サイト・ZINE へのロゴ掲載（小）</li>
+                <li>Special Thanks クレジット</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+        <div class="chest-cta">
+          <p>ご質問・お申し込みは、下記メールアドレスまでお気軽にご連絡ください。</p>
+          <a href="mailto:info@studemia.org?subject=Studemia%202027%20協賛について">→ info@studemia.org</a>
+        </div>
       </div>
     </div>
     <p class="sponsor-note">※ 2026 実績をもとにした仮プランです。金額・特典は確定次第更新します。</p>
@@ -529,7 +756,7 @@
   <!-- ── Voices ── -->
   <section id="voices">
     <div class="section-label">// voices from the sessions</div>
-    <h2 class="pixel-h">VOICES</h2>
+    <h2 class="pixel-h"><img src="img/tiles/gem-blue.png" alt="" style="width:24px; vertical-align:-5px; image-rendering:pixelated; margin-right:8px;">VOICES</h2>
     <p style="margin-bottom: 20px; font-size: 13.5px; color: var(--text-dim);">
       過去の合宿で交わされた言葉から。ゲスト講演と、その場で参加者が書き残したメモの抜粋です。
     </p>
@@ -610,7 +837,7 @@
   <!-- ── Archives ── -->
   <section id="archives">
     <div class="section-label">// archives</div>
-    <h2 class="pixel-h">ARCHIVES</h2>
+    <h2 class="pixel-h"><img src="img/tiles/sign-post.png" alt="" style="width:24px; vertical-align:-5px; image-rendering:pixelated; margin-right:8px;">ARCHIVES</h2>
     <div class="archive-links">
       <a href="/2026/"><span class="a-name">Studemia 2026</span><span class="a-arrow">→</span></a>
       <a href="/2025/"><span class="a-name">Studemia Summer Camp 2025</span><span class="a-arrow">→</span></a>
@@ -624,6 +851,72 @@
   <p>© 2027 Studemia — DRAFT TEMPLATE</p>
   <p><a href="mailto:info@studemia.org">info@studemia.org</a></p>
 </footer>
+
+<script>
+  /* hero field: build the grass/dirt tilemap from an ASCII map instead of
+     stitching rectangles — a real (if small) tile grid, jagged edges included. */
+  (function () {
+    var MAP = [
+      'GGGGGGPPPPPGGGGGGGGGGG',
+      'GGGGGGPPPPPGGGGGGGGGGG',
+      'GGGGGGGPPPGGGGGGGGGGGG',
+      'GGGGGGGPPPGGGGGGGGGGGG',
+      'GGGGGGGGPPPGGGGGGGGGGG',
+      'GGGGGGGGGPPPGGGGGGGGGG',
+      'GGGGGGGGGGPPPGGGGGGGGG',
+      'GGGGGGGGGGGGPPGGGGGGGG',
+      'GGGGGGGGGGGGPPPGGGGGGG',
+      'GGGGGGGGGGGPPPGGGGGGGG',
+      'GGGGGGGGGGPPPGGGGGGGGG',
+      'GGGGGGGGGPPPPGGGGGGGGG',
+      'GGGGGGGGGPPPGGGGGGGGGG'
+    ];
+    var grid = document.getElementById('field-grid');
+    if (!grid) return;
+    var rows = MAP.length, cols = MAP[0].length;
+    grid.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+    grid.style.gridTemplateRows = 'repeat(' + rows + ', 1fr)';
+    var frag = document.createDocumentFragment();
+    MAP.forEach(function (row) {
+      for (var i = 0; i < row.length; i++) {
+        var cell = document.createElement('div');
+        cell.className = 'field-cell ' + (row[i] === 'P' ? 'p' : 'g');
+        frag.appendChild(cell);
+      }
+    });
+    grid.appendChild(frag);
+  })();
+
+  /* speech-bubble pop-in for VOICES: each bubble bounces in as it scrolls
+     into view, staggered a little so they don't all pop at once */
+  (function () {
+    var bubbles = document.querySelectorAll('#voices .voice');
+    if (!bubbles.length) return;
+
+    function revealAll() {
+      bubbles.forEach(function (b) { b.classList.add('revealed'); });
+    }
+
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      revealAll();
+      return;
+    }
+    try {
+      var observer = new IntersectionObserver(function (items) {
+        items.forEach(function (item) {
+          if (!item.isIntersecting) return;
+          var el = item.target;
+          var i = Array.prototype.indexOf.call(bubbles, el);
+          setTimeout(function () { el.classList.add('revealed'); }, (i % 3) * 90);
+          observer.unobserve(el);
+        });
+      }, { threshold: 0.2, rootMargin: '0px 0px -30px 0px' });
+      bubbles.forEach(function (b) { observer.observe(b); });
+    } catch (err) {
+      revealAll();
+    }
+  })();
+</script>
 
 </body>
 </html>
