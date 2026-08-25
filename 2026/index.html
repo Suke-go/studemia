@@ -972,6 +972,22 @@
       );
     }
 
+    .sponsors-current.silver {
+      border-color: rgba(196, 202, 212, 0.16);
+    }
+
+    .sponsors-current.silver .tier-head .tier-name {
+      color: rgba(206, 212, 224, 0.95);
+    }
+
+    .sponsors-current.silver .tier-head .tier-rule {
+      background: linear-gradient(
+        90deg,
+        rgba(196, 202, 212, 0.3),
+        rgba(196, 202, 212, 0.02)
+      );
+    }
+
     .sponsor-logos {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -1009,7 +1025,8 @@
     }
 
     .sponsor-logo img.silver-logo {
-      max-height: 38px;
+      max-height: 26px;
+      max-width: 200px;
     }
 
     .sponsor-plans {
@@ -2000,7 +2017,7 @@
         </div>
       </div>
 
-      <div class="sponsors-current">
+      <div class="sponsors-current silver">
         <div class="tier-head">
           <span class="tier-name">SILVER SPONSORS</span>
           <span class="tier-rule" aria-hidden="true"></span>
@@ -2033,7 +2050,6 @@
           <ul>
             <li>公式サイト・印刷物へのロゴ掲載（中）</li>
             <li>ZINE 内ロゴ掲載</li>
-            <li>参加枠 2名</li>
           </ul>
         </div>
 
