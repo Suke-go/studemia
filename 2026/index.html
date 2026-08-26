@@ -839,6 +839,7 @@
     .detail-row .detail-sub {
       flex-basis: 100%;
       margin-top: 4px;
+      margin-left: 144px;
       font-family: 'Share Tech Mono', monospace;
       font-size: 12px;
       letter-spacing: 0.04em;
@@ -938,11 +939,96 @@
     }
 
     /* ── Speaker card ── */
+    .speakers-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
     .speaker-card {
-      padding: 32px 28px;
-      background: rgba(15, 15, 20, 0.45);
-      border: 1px solid rgba(130, 150, 180, 0.08);
-      border-radius: 10px;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 32px;
+      padding: 0;
+      background: rgba(12, 12, 16, 0.55);
+      border: 1px solid rgba(130, 180, 220, 0.14);
+      border-radius: 12px;
+    }
+
+    .speaker-card .photo {
+      position: relative;
+      align-self: start;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: #0a0a0c;
+    }
+
+    .speaker-card .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: grayscale(0.55) contrast(1.15) brightness(0.9);
+      mix-blend-mode: luminosity;
+    }
+
+    .speaker-card .photo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(130,180,220,0.18), rgba(10,10,12,0.55) 70%);
+      mix-blend-mode: multiply;
+    }
+
+    .speaker-card .photo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      box-shadow: inset 0 0 0 1px rgba(130,180,220,0.25);
+      pointer-events: none;
+    }
+
+    /* HUD target-lock frame */
+    .speaker-card .hud-corner {
+      position: absolute;
+      z-index: 2;
+      width: 22px;
+      height: 22px;
+      pointer-events: none;
+    }
+    .speaker-card .hud-corner.tl { top: 10px; left: 10px; border-top: 2px solid rgba(140, 200, 255, 0.85); border-left: 2px solid rgba(140, 200, 255, 0.85); }
+    .speaker-card .hud-corner.tr { top: 10px; right: 10px; border-top: 2px solid rgba(140, 200, 255, 0.85); border-right: 2px solid rgba(140, 200, 255, 0.85); }
+    .speaker-card .hud-corner.bl { bottom: 10px; left: 10px; border-bottom: 2px solid rgba(140, 200, 255, 0.85); border-left: 2px solid rgba(140, 200, 255, 0.85); }
+    .speaker-card .hud-corner.br { bottom: 10px; right: 10px; border-bottom: 2px solid rgba(140, 200, 255, 0.85); border-right: 2px solid rgba(140, 200, 255, 0.85); }
+
+    .speaker-card .hud-scan {
+      position: absolute;
+      z-index: 2;
+      left: 0;
+      right: 0;
+      height: 36%;
+      background: linear-gradient(180deg, transparent, rgba(140,200,255,0.16) 45%, rgba(140,200,255,0.35) 50%, rgba(140,200,255,0.16) 55%, transparent);
+      animation: hud-scan-move 4s ease-in-out infinite;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    @keyframes hud-scan-move {
+      0%   { top: -36%; }
+      50%  { top: 100%; }
+      100% { top: -36%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .speaker-card .hud-scan { animation: none; display: none; }
+    }
+
+    .speaker-card .body {
+      padding: 28px 28px 28px 0;
+      min-width: 0;
     }
 
     .speaker-card .role {
@@ -959,10 +1045,12 @@
     }
 
     .speaker-card .name {
-      font-family: 'Zen Kaku Gothic New', sans-serif;
-      font-weight: 700;
-      font-size: 22px;
-      color: rgba(230, 225, 210, 0.95);
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 30px;
+      letter-spacing: 0.03em;
+      color: rgba(235, 240, 250, 0.98);
+      text-shadow: 0 0 18px rgba(140, 200, 255, 0.35);
       margin-bottom: 4px;
     }
 
@@ -976,19 +1064,44 @@
     }
 
     .speaker-card .affiliation {
-      font-size: 13.5px;
-      color: rgba(180, 185, 200, 0.6);
-      margin-bottom: 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      color: rgba(130, 180, 220, 0.75);
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(130, 150, 180, 0.1);
     }
 
-    .speaker-card .bio {
-      font-size: 14px;
-      line-height: 1.9;
-      color: rgba(200, 205, 215, 0.75);
+    .speaker-card .dossier {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      row-gap: 10px;
+      column-gap: 16px;
+    }
+
+    .speaker-card .dossier dt,
+    .speaker-card .dossier dd {
+      padding-bottom: 9px;
+      border-bottom: 1px dotted rgba(130, 150, 180, 0.14);
+    }
+
+    .speaker-card .dossier dt {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      color: rgba(130, 180, 220, 0.55);
+      padding-top: 1px;
+    }
+
+    .speaker-card .dossier dd {
+      font-size: 13px;
+      line-height: 1.75;
+      color: rgba(205, 210, 220, 0.85);
     }
 
     .speaker-card .tags {
-      margin-top: 16px;
+      margin-top: 18px;
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
@@ -997,11 +1110,23 @@
     .speaker-card .tags span {
       font-family: 'Share Tech Mono', monospace;
       font-size: 10.5px;
-      color: rgba(130, 180, 220, 0.6);
-      border: 1px solid rgba(130, 180, 220, 0.2);
+      color: rgba(130, 180, 220, 0.65);
+      border: 1px solid rgba(130, 180, 220, 0.22);
       padding: 3px 9px;
       border-radius: 3px;
       letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 640px) {
+      .speaker-card {
+        grid-template-columns: 1fr;
+      }
+      .speaker-card .photo {
+        aspect-ratio: 16 / 9;
+      }
+      .speaker-card .body {
+        padding: 24px;
+      }
     }
 
     /* ── Sponsor: Plans ── */
@@ -1644,6 +1769,9 @@
         flex-basis: auto;
         opacity: 0.85;
       }
+      .detail-row .detail-sub {
+        margin-left: 0;
+      }
       .individual-support { align-items: stretch; }
       .individual-support .cta-button { width: 100%; text-align: center; }
       .venue-section {
@@ -1863,19 +1991,34 @@
     <section id="speakers">
       <div class="section-label" data-status="CONFIRMED" data-source="SPEAKER REGISTRY">// guest speakers</div>
       <h2>GUEST SPEAKERS</h2>
-      <div class="speaker-card">
-        <span class="role">GUEST SPEAKER</span>
-        <div class="name">鹿野 豊<span class="en">Yutaka Shikano</span></div>
-        <div class="affiliation">筑波大学 情報学群 情報科学類</div>
-        <p class="bio">
-          量子測定・量子ウォーク・弱値などを専門とする物理学者。国内外の研究機関で量子情報・量子技術の研究に携わり、
-          学術と社会実装の橋渡しとなる活動を続けている。
-        </p>
-        <div class="tags">
-          <span>量子測定</span>
-          <span>量子ウォーク</span>
-          <span>量子情報</span>
+      <div class="speakers-list">
+
+        <div class="speaker-card">
+          <span class="hud-scan"></span>
+          <div class="photo">
+            <img src="img/shikano.jpg" alt="鹿野 豊">
+            <span class="hud-corner tl"></span>
+            <span class="hud-corner tr"></span>
+            <span class="hud-corner bl"></span>
+            <span class="hud-corner br"></span>
+          </div>
+          <div class="body">
+            <span class="role">GUEST SPEAKER</span>
+            <div class="name">鹿野 豊<span class="en">Yutaka Shikano</span></div>
+            <div class="affiliation">筑波大学 システム情報系 教授</div>
+            <p class="bio">
+              日本物理学会若手奨励賞を受賞した気鋭の物理学者。東京工業大学で博士号（理学）を取得後、
+              自然科学研究機構 分子科学研究所、東京大学先端科学技術研究センター、慶應義塾大学大学院理工学研究科で
+              特任准教授を歴任し、2023年10月より筑波大学システム情報系 教授。アメリカ・チャップマン大学量子科学研究所の
+              准メンバーも務める。専門は量子測定・弱値理論・量子ウォーク。
+            </p>
+            <div class="tags">
+              <span>量子測定</span>
+              <span>量子ウォーク</span>
+            </div>
+          </div>
         </div>
+
       </div>
     </section>
 
@@ -2016,8 +2159,8 @@
         <div class="team-card">
           <div class="role">Venue Chair</div>
           <div class="name">松田 公慶</div>
-          <div class="interests">応用物理/ シンチレータ</div>
           <div class="affiliation">筑波大学 応用理工学類</div>
+          <div class="interests">応用物理/ シンチレータ</div>
         </div>
 
       </div>
@@ -2048,11 +2191,11 @@
       <h2>SPECIAL THANKS</h2>
       <div class="glass-card">
         <ul style="list-style: none; padding: 0;">
-          <li style="padding: 4px 0;">原島 博 氏（東京大学 名誉教授）</li>
-          <li style="padding: 4px 0;">林 和弘 氏（文部科学省 NISTEP）</li>
-          <li style="padding: 4px 0;">渡辺 健堂 氏（学術バー・株式会社エグゼクティブ・ボード）</li>
-          <li style="padding: 4px 0;">青山 柊太朗 氏</li>
-          <li style="padding: 4px 0;">田中 翔大 氏</li>
+          <li style="padding: 4px 0;"><a href="https://harashima-lab.jp/" target="_blank" rel="noopener">原島 博</a> 氏（東京大学 名誉教授）</li>
+          <li style="padding: 4px 0;"><a href="https://researchmap.jp/kaz_hayashi" target="_blank" rel="noopener">林 和弘</a> 氏（文部科学省 NISTEP）</li>
+          <li style="padding: 4px 0;"><a href="https://www.e-board.jp/consultant/kendowatanabe/" target="_blank" rel="noopener">渡辺 健堂</a> 氏（学術バー・株式会社エグゼクティブ・ボード）</li>
+          <li style="padding: 4px 0;"><a href="https://scrapbox.io/blu3mo-public/" target="_blank" rel="noopener">青山 柊太朗</a> 氏</li>
+          <li style="padding: 4px 0;"><a href="https://shodaitanaka.com/jpn/" target="_blank" rel="noopener">田中 翔大</a> 氏</li>
         </ul>
       </div>
     </section>
