@@ -937,6 +937,74 @@
       border-bottom: 1px solid rgba(130, 180, 220, 0.15);
     }
 
+    /* ── Speaker card ── */
+    .speaker-card {
+      padding: 32px 28px;
+      background: rgba(15, 15, 20, 0.45);
+      border: 1px solid rgba(130, 150, 180, 0.08);
+      border-radius: 10px;
+    }
+
+    .speaker-card .role {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: rgba(130, 180, 220, 0.7);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px solid rgba(130, 180, 220, 0.25);
+      padding: 3px 8px;
+      border-radius: 3px;
+      margin-bottom: 14px;
+    }
+
+    .speaker-card .name {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: rgba(230, 225, 210, 0.95);
+      margin-bottom: 4px;
+    }
+
+    .speaker-card .name .en {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(130, 150, 180, 0.5);
+      margin-left: 10px;
+      letter-spacing: 0.05em;
+    }
+
+    .speaker-card .affiliation {
+      font-size: 13.5px;
+      color: rgba(180, 185, 200, 0.6);
+      margin-bottom: 16px;
+    }
+
+    .speaker-card .bio {
+      font-size: 14px;
+      line-height: 1.9;
+      color: rgba(200, 205, 215, 0.75);
+    }
+
+    .speaker-card .tags {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .speaker-card .tags span {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10.5px;
+      color: rgba(130, 180, 220, 0.6);
+      border: 1px solid rgba(130, 180, 220, 0.2);
+      padding: 3px 9px;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Sponsor: Plans ── */
     /* ── Sponsor: Plans ── */
     /* ── Current sponsors ── */
     .sponsors-current {
@@ -1793,13 +1861,21 @@
 
     <!-- ── Guest Speakers ── -->
     <section id="speakers">
-      <div class="section-label" data-status="PENDING" data-source="SPEAKER REGISTRY">// guest speakers</div>
+      <div class="section-label" data-status="CONFIRMED" data-source="SPEAKER REGISTRY">// guest speakers</div>
       <h2>GUEST SPEAKERS</h2>
-      <div class="glass-card" data-augmented-ui="tl-clip tr-clip br-clip bl-clip both" style="text-align: center; padding: 48px 32px; --aug-border-bg: rgba(255,120,140,.4); --aug-border-all: 1px; --aug-inlay-bg: rgba(255,90,120,.05); --aug-inlay-all: 4px;">
-        <span class="tba-badge">SPEAKERS — TBA</span>
-        <p style="margin-top: 16px; font-size: 14px; color: rgba(180,185,200,0.5);">
-          ゲストスピーカーは決定次第お知らせします
+      <div class="speaker-card">
+        <span class="role">GUEST SPEAKER</span>
+        <div class="name">鹿野 豊<span class="en">Yutaka Shikano</span></div>
+        <div class="affiliation">筑波大学 情報学群 情報科学類</div>
+        <p class="bio">
+          量子測定・量子ウォーク・弱値などを専門とする物理学者。国内外の研究機関で量子情報・量子技術の研究に携わり、
+          学術と社会実装の橋渡しとなる活動を続けている。
         </p>
+        <div class="tags">
+          <span>量子測定</span>
+          <span>量子ウォーク</span>
+          <span>量子情報</span>
+        </div>
       </div>
     </section>
 
